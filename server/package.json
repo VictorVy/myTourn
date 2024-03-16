@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --env-file=.env index.js",
     "dev": "nodemon --env-file=.env index.js",
-    "tunnel": "bash tunnel.sh"
+    "tunnel": "bash tunnel.sh",
+    "build": "rm -rf dist && cd ../client && npm run build && cp -r dist ../server/dist && cd ../server"
   },
   "author": "",
   "license": "ISC",

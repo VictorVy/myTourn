@@ -57,8 +57,10 @@ initializePool().then(async () => {
 
 
 const app = express();
+app.use(express.static("dist"));
 
 app.get("/api", (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
     res.json({ message: "Hello from server!" });
 });
 

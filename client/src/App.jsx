@@ -6,7 +6,7 @@ function App() {
   useEffect(() => {
     fetch("http://localhost:5172/api")
       .then((res) => res.json())
-      .then((data) => setApiTest(data));
+      .then((data) => setApiTest(data.message));
   }, []);
 
   return (
