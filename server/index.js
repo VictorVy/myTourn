@@ -46,8 +46,12 @@ initializePool().then(async () => {
     let connection = await oracledb.getConnection();
     console.log("Connection started");
 
+    // await connection.execute(
+    //     `CREATE TABLE test_victor (id NUMBER, name VARCHAR2(20))`
+    // );
+
     const names = await connection.execute(
-        `SELECT owner, table_name FROM all_tables`
+        `SELECT * FROM test_victor`
     );
 
     console.log(names);
