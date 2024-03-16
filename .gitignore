@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+tunnel.sh
 
 # Editor directories and files
 .vscode/*
