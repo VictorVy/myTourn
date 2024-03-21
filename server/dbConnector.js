@@ -54,6 +54,26 @@ async function test() {
     console.log("Connection closed");
 }
 
+async function executeQuery(selectList, fromList, whereClause) {
+    let connection;
+    try {
+        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        connection = await oracledb.getConnection();
+
+        let query = `SELECT ${selectList} FROM ${fromList}`;
+        if (whereClause !== "") {
+            query += ` WHERE ${whereClause}`;
+        }
+
+        const result = await connection.execute(query);
+        return result;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
 process
     .once("SIGTERM", closePool)
     .once("SIGINT", closePool);

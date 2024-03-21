@@ -1,4 +1,7 @@
 import express from "express";
+import dbConnector from "./dbConnector.js";
+
+dbConnector.initializePool().then(dbConnector.test);
 
 const router = express.Router();
 
