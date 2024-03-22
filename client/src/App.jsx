@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import MyButton from './components/testcp';
 
 function App() {
   const [apiTest, setApiTest] = useState("");
@@ -11,7 +12,8 @@ function App() {
 
   return (
     <>
-      <div className="text-red-800 font-bold">Hello Victor and Ronald!</div>
+      <MyButton></MyButton>
+      <div className="text-red-800 font-bold">Hello Victor and Ronald and also me!</div>
       <div className="text-blue-800 font-bold">{(apiTest === "") ? <p>Loading...</p> : <p>{apiTest}</p>}</div>
     </>
   )
