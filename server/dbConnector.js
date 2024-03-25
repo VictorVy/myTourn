@@ -54,14 +54,92 @@ async function test() {
     console.log("Connection closed");
 }
 
-async function executeQuery(selectList, fromList, whereClause) {
+async function executeQuery(selectList, fromList, whereClause, groupList, havingClause, orderList) {
     let connection;
     try {
         // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
         connection = await oracledb.getConnection();
 
         let query = `SELECT ${selectList} FROM ${fromList}`;
-        if (whereClause !== "") {
+
+        if (whereClause !== undefined) {
+            query += ` WHERE ${whereClause}`;
+        }
+
+        if (groupList !== undefined) {
+            query += ` GROUP BY ${groupList}`;
+
+            if (havingClause !== undefined) {
+                query += ` HAVING ${havingClause}`;
+            }
+        }
+
+        if (orderList !== undefined) {
+            query += ` ORDER BY ${orderList}`;
+        }
+
+        const result = await connection.execute(query);
+        return result;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+async function executeInsert(table, columns, valuesArr) {
+    let connection;
+    try {
+        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        connection = await oracledb.getConnection();
+
+        let query = "INSERT ALL";
+
+        for (let i = 0; i < valuesArr.length; i++) {
+            query += ` INTO ${table} (${columns}) VALUES (${valuesArr[i]})`;
+        }
+
+        query += " SELECT * FROM dual";
+
+        const result = await connection.execute(query);
+        return result;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+async function executeUpdate(table, setList, whereClause) {
+    let connection;
+    try {
+        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        connection = await oracledb.getConnection();
+
+        let query = `UPDATE ${table} SET ${setList}`;
+
+        if (whereClause !== undefined) {
+            query += ` WHERE ${whereClause}`;
+        }
+
+        const result = await connection.execute(query);
+        return result;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+async function executeDelete(table, whereClause) {
+    let connection;
+    try {
+        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        connection = await oracledb.getConnection();
+
+        let query = `DELETE FROM ${table}`;
+
+        if (whereClause !== undefined) {
             query += ` WHERE ${whereClause}`;
         }
 
