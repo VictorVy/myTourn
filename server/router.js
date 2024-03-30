@@ -10,4 +10,10 @@ router.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
+router.get("/api/teamPlayers/:teamId", async (req, res) => {
+    const teamId = req.params.teamId;
+    const teamPlayers = await dbConnector.getTeamPlayers(teamId);
+    res.json(teamPlayers);
+});
+
 export default router;

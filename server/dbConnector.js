@@ -152,8 +152,26 @@ async function executeDelete(table, whereClause) {
     }
 }
 
+async function getTeamPlayers(teamId) {
+    let connection;
+    try {
+        connection = await oracledb.getConnection();
+
+        const result = await connection.execute(
+            `SELECT * FROM Member NATURAL JOIN Player WHERE teamid = :teamId`,
+            [teamId]
+        );
+
+        return result.rows;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
 process
     .once("SIGTERM", closePool)
     .once("SIGINT", closePool);
 
-export default { initializePool, test };
+export default { initializePool, test, getTeamPlayers };
