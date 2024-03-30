@@ -170,8 +170,26 @@ async function getTeamPlayers(teamId) {
     }
 }
 
+async function getNumTournParticipants() {
+    let connection;
+    try {
+        connection = await oracledb.getConnection();
+
+        const result = await connection.execute(
+            `SELECT tid, COUNT(*) FROM Joins GROUP BY tid`
+        );
+
+        return result.rows;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+
 process
     .once("SIGTERM", closePool)
     .once("SIGINT", closePool);
 
-export default { initializePool, test, getTeamPlayers };
+export default { initializePool, test, getTeamPlayers, getNumTournParticipants };

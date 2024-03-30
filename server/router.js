@@ -16,4 +16,9 @@ router.get("/api/teamPlayers/:teamId", async (req, res) => {
     res.json(teamPlayers);
 });
 
+router.get("/api/numTournParticipants", async (req, res) => {
+    const numParticipants = await dbConnector.getNumTournParticipants();
+    res.json(numParticipants);
+});
+
 export default router;
