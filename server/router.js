@@ -21,4 +21,14 @@ router.get("/api/numTournParticipants", async (req, res) => {
     res.json(numParticipants);
 });
 
+router.get("/api/popularGames", async (req, res) => {
+    const popularGames = await dbConnector.getPopularGames();
+    res.json(popularGames);
+});
+
+router.get("/api/highestAvgViewershipPlatform", async (req, res) => {
+    const platform = await dbConnector.getHighestAvgViewershipPlatform();
+    res.json(platform);
+});
+
 export default router;

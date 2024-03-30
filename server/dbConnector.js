@@ -158,7 +158,9 @@ async function getTeamPlayers(teamId) {
         connection = await oracledb.getConnection();
 
         const result = await connection.execute(
-            `SELECT * FROM Member NATURAL JOIN Player WHERE teamid = :teamId`,
+            `SELECT * 
+            FROM Member NATURAL JOIN Player 
+            WHERE teamid = :teamId`,
             [teamId]
         );
 
@@ -176,7 +178,58 @@ async function getNumTournParticipants() {
         connection = await oracledb.getConnection();
 
         const result = await connection.execute(
-            `SELECT tid, COUNT(*) FROM Joins GROUP BY tid`
+            `SELECT tid, COUNT(*) 
+            FROM Joins 
+            GROUP BY tid`
+        );
+
+        return result.rows;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+async function getPopularGames() {
+    let connection;
+    try {
+        connection = await oracledb.getConnection();
+
+        const teamGames = await connection.execute(
+            `SELECT gameid 
+            FROM TeamPlays 
+            GROUP BY gameid 
+            HAVING COUNT(*) >= 3`
+        );
+
+        const playerGames = await connection.execute(
+            `SELECT gameid 
+            FROM PlayerPlays 
+            GROUP BY gameid 
+            HAVING COUNT(*) >= 5`
+        );
+
+        return { teamGames, playerGames };
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+async function getHighestAvgViewershipPlatform() {
+    let connection;
+    try {
+        connection = await oracledb.getConnection();
+
+        const result = await connection.execute(
+            `SELECT platform, AVG(viewership)
+            FROM Broadcast 
+            GROUP BY platform 
+            HAVING AVG(viewership) >= ALL (SELECT AVG(viewership) 
+                                            FROM Broadcast 
+                                            GROUP BY platform)`
         );
 
         return result.rows;
@@ -192,4 +245,4 @@ process
     .once("SIGTERM", closePool)
     .once("SIGINT", closePool);
 
-export default { initializePool, test, getTeamPlayers, getNumTournParticipants };
+export default { initializePool, test, getTeamPlayers, getNumTournParticipants, getPopularGames, getHighestAvgViewershipPlatform };
