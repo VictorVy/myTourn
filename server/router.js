@@ -31,4 +31,9 @@ router.get("/api/highestAvgViewershipPlatform", async (req, res) => {
     res.json(platform);
 });
 
+router.get("/api/mvps", async (req, res) => {
+    const mvps = await dbConnector.getMVPs();
+    res.json(mvps);
+});
+
 export default router;

@@ -56,6 +56,8 @@ async function test() {
 
 async function executeQuery(selectList, fromList, whereClause, groupList, havingClause, orderList) {
     let connection;
+    let result;
+
     try {
         // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
         connection = await oracledb.getConnection();
@@ -78,17 +80,20 @@ async function executeQuery(selectList, fromList, whereClause, groupList, having
             query += ` ORDER BY ${orderList}`;
         }
 
-        const result = await connection.execute(query);
-        return result;
+        result = await connection.execute(query);
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
     }
 }
 
 async function executeInsert(table, columns, valuesArr) {
     let connection;
+    let result;
+
     try {
         // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
         connection = await oracledb.getConnection();
@@ -101,17 +106,21 @@ async function executeInsert(table, columns, valuesArr) {
 
         query += " SELECT * FROM dual";
 
-        const result = await connection.execute(query);
-        return result;
+        result = await connection.execute(query);
+
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
     }
 }
 
 async function executeUpdate(table, setList, whereClause) {
     let connection;
+    let result;
+
     try {
         // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
         connection = await oracledb.getConnection();
@@ -122,17 +131,20 @@ async function executeUpdate(table, setList, whereClause) {
             query += ` WHERE ${whereClause}`;
         }
 
-        const result = await connection.execute(query);
-        return result;
+        result = await connection.execute(query);
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
     }
 }
 
 async function executeDelete(table, whereClause) {
     let connection;
+    let result;
+
     try {
         // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
         connection = await oracledb.getConnection();
@@ -143,56 +155,64 @@ async function executeDelete(table, whereClause) {
             query += ` WHERE ${whereClause}`;
         }
 
-        const result = await connection.execute(query);
-        return result;
+        result = await connection.execute(query);
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
     }
 }
 
 async function getTeamPlayers(teamId) {
     let connection;
+    let result;
+
     try {
         connection = await oracledb.getConnection();
 
-        const result = await connection.execute(
+        result = await connection.execute(
             `SELECT * 
             FROM Member NATURAL JOIN Player 
             WHERE teamid = :teamId`,
             [teamId]
         );
 
-        return result.rows;
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
     }
 }
 
 async function getNumTournParticipants() {
     let connection;
+    let result;
+
     try {
         connection = await oracledb.getConnection();
 
-        const result = await connection.execute(
+        result = await connection.execute(
             `SELECT tid, COUNT(*) 
             FROM Joins 
             GROUP BY tid`
         );
-
-        return result.rows;
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
     }
 }
 
 async function getPopularGames() {
     let connection;
+    let result;
+
     try {
         connection = await oracledb.getConnection();
 
@@ -210,20 +230,24 @@ async function getPopularGames() {
             HAVING COUNT(*) >= 5`
         );
 
-        return { teamGames, playerGames };
+        result = { teamGames, playerGames };
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
     }
 }
 
 async function getHighestAvgViewershipPlatform() {
     let connection;
+    let result;
+
     try {
         connection = await oracledb.getConnection();
 
-        const result = await connection.execute(
+        result = await connection.execute(
             `SELECT platform, AVG(viewership)
             FROM Broadcast 
             GROUP BY platform 
@@ -231,12 +255,38 @@ async function getHighestAvgViewershipPlatform() {
                                             FROM Broadcast 
                                             GROUP BY platform)`
         );
-
-        return result.rows;
     } catch (err) {
         console.error(err);
+        result = err;
     } finally {
         await connection.close();
+        return result;
+    }
+}
+
+async function getMVPs() {
+    let connection;
+    let result;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        result = await connection.execute(
+            `SELECT * 
+            FROM Participant 
+            WHERE NOT EXISTS (SELECT *
+                              FROM Tournament 
+                              WHERE NOT EXISTS (SELECT *
+                                                FROM Joins 
+                                                WHERE tid = tid 
+                                                AND pid = pid))`
+        );
+    } catch (err) {
+        console.error(err);
+        result = err;
+    } finally {
+        await connection.close();
+        return result.rows;
     }
 }
 
@@ -245,4 +295,10 @@ process
     .once("SIGTERM", closePool)
     .once("SIGINT", closePool);
 
-export default { initializePool, test, getTeamPlayers, getNumTournParticipants, getPopularGames, getHighestAvgViewershipPlatform };
+export default { initializePool,
+                 test,
+                 getTeamPlayers,
+                 getNumTournParticipants,
+                 getPopularGames,
+                 getHighestAvgViewershipPlatform,
+                 getMVPs };
