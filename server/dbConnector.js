@@ -2,6 +2,29 @@ import oracledb from "oracledb";
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
+// sanitization with help from docs at https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries
+const validTables = ["Brodcast",
+                    "HostPlatform",
+                    "ESportsOrg",
+                    "Game",
+                    "IndividualGame",
+                    "TeamGame",
+                    "Organizer",
+                    "Participant",
+                    "Player",
+                    "Team",
+                    "Sponsor",
+                    "Tournament",
+                    "StartDate",
+                    "Venue",
+                    "PostalCode",
+                    "Contract",
+                    "Joins",
+                    "Member",
+                    "TournamentFunding",
+                    "TeamPlays",
+                    "PlayerPlays"];
+
 // with help from guide at https://github.students.cs.ubc.ca/CPSC304/CPSC304_Node_Project/
 
 const dbConfig = {
@@ -54,12 +77,28 @@ async function test() {
     console.log("Connection closed");
 }
 
+function checkTables(tableList) {
+    let tables = tableList.split(",").map(table => table.trim());
+
+    for (let table of tables) {
+        if (!validTables.includes(table)) {
+            return { err: true, table: table };
+        }
+    }
+
+    return { err: false };
+}
+
 async function executeQuery(selectList, fromList, whereClause, groupList, havingClause, orderList) {
     let connection;
     let result;
 
     try {
-        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         let query = `SELECT ${selectList} FROM ${fromList}`;
@@ -95,7 +134,11 @@ async function executeInsert(table, columns, valuesArr) {
     let result;
 
     try {
-        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         let query = "INSERT ALL";
@@ -122,7 +165,15 @@ async function executeUpdate(table, setList, whereClause) {
     let result;
 
     try {
-        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
+        if (!isValid(table)) {
+            throw new Error("Invalid table name");
+        }
+
         connection = await oracledb.getConnection();
 
         let query = `UPDATE ${table} SET ${setList}`;
@@ -146,7 +197,11 @@ async function executeDelete(table, whereClause) {
     let result;
 
     try {
-        // TODO: sanitize inputs (https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries)
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         let query = `DELETE FROM ${table}`;
@@ -170,6 +225,11 @@ async function getTeamPlayers(teamId) {
     let result;
 
     try {
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
@@ -193,6 +253,11 @@ async function getNumTournParticipants() {
     let result;
 
     try {
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
@@ -214,6 +279,11 @@ async function getPopularGames() {
     let result;
 
     try {
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         const teamGames = await connection.execute(
@@ -245,6 +315,11 @@ async function getHighestAvgViewershipPlatform() {
     let result;
 
     try {
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
@@ -269,6 +344,11 @@ async function getMVPs() {
     let result;
 
     try {
+        let check = checkTables(fromList);
+        if (check.err) {
+            throw new Error("Invalid table name: " + check.table);
+        }
+
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
