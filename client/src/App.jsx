@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react"
-import MyButton from './components/testcp';
+import MyButton from './components/elements/Button.jsx';
+import LandingPage from "./components/pages/landingPage";
+import TournamentPage from "./components/pages/tournamentInfoPage.jsx";
+import PlayerPage from "./components/pages/playerPage.jsx";
+import TeamPage from "./components/pages/teamPage.jsx";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+
 
 function App() {
   const [apiTest, setApiTest] = useState("");
@@ -12,9 +19,7 @@ function App() {
 
   return (
     <>
-      <MyButton></MyButton>
-      <div className="text-red-800 font-bold">Hello Victor and Ronald and also me!</div>
-      <div className="text-blue-800 font-bold">{(apiTest === "") ? <p>Loading...</p> : <p>{apiTest}</p>}</div>
+      <TeamPage></TeamPage>
     </>
   )
 }
