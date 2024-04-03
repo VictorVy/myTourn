@@ -34,7 +34,7 @@ const TeamTable = () => {
             Add Team
           </button>
           <button onClick={() => deleteTeam()} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Delete Selected
+            Delete
           </button>
         </div>
         <table className="w-full">

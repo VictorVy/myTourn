@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SoloTable from '../elements/singleTable';
 import TeamTable from '../elements/teamTable';
+import { Link } from 'react-router-dom';
 
 
 const TournamentPage = () => {
@@ -23,27 +24,29 @@ const TournamentPage = () => {
             <p>{tournament.broadcast.name}</p>
             <p>{tournament.broadcast.platform}</p> 
             <p>{tournament.broadcast.viewership} viewers</p>
+            <button className='border bg-gray-400 text-white mb-2' >Edit</button>
           </div>
           <div className="bg-white p-4 rounded shadow-md">
-            <h2 className="text-lg font-semibold mb-2">Sponsor</h2>
+            <h2 className="text-lg font-semibold mb-2 ">Sponsor</h2>
             <p>{tournament.sponsor.SponsorName}</p>
             <p>{tournament.sponsor.amount}$</p>
+            <button className='border bg-gray-400 text-white mb-2' >Edit</button>
           </div>
           <div className="bg-white p-4 rounded shadow-md">
             <h2 className="text-lg font-semibold mb-2">Game Name</h2>
             <p>{tournament.game.name}</p>
             <p className="text-sm text-gray-500">{tournament.game.type}</p>
+            <button className='border bg-gray-400 text-white mb-2' >Edit</button>
           </div>
           <div className="bg-white p-4 rounded shadow-md">
             <h2 className="text-lg font-semibold mb-2">Venue</h2>
             <p>{tournament.venue.streetAddress}, {tournament.venue.city}</p>
             <p>{tournament.venue.country}</p>
+            <button className='border bg-gray-400 text-white mb-2' >Edit</button>
           </div>
         </div>
       </div>
       <>
-      <TeamTable></TeamTable>
-      <SoloTable></SoloTable>
       </>
     </div>
   );
