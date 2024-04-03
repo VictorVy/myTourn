@@ -1,4 +1,13 @@
 import React, { useEffect, useState } from "react"
+import MyButton from './components/elements/Button.jsx';
+import LandingPage from "./components/pages/landingPage";
+import TournamentPage from "./components/pages/tournamentInfoPage.jsx";
+import PlayerPage from "./components/pages/playerPage.jsx";
+import TeamPage from "./components/pages/teamPage.jsx";
+import SoloTable from "./components/elements/singleTable.jsx";
+import TeamTable from "./components/elements/teamTable.jsx";
+
+
 
 function App() {
   const [apiTest, setApiTest] = useState("");
@@ -11,8 +20,13 @@ function App() {
 
   return (
     <>
-      <div className="text-red-800 font-bold">Hello Victor and Ronald!</div>
-      <div className="text-blue-800 font-bold">{(apiTest === "") ? <p>Loading...</p> : <p>{apiTest}</p>}</div>
+      <LandingPage></LandingPage>
+      <TournamentPage></TournamentPage>
+      <SoloTable>
+      </SoloTable>
+      <TeamTable></TeamTable>
+      <PlayerPage></PlayerPage>
+      <TeamPage></TeamPage>
     </>
   )
 }
