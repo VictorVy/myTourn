@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+
 const TeamPage = () => {
   const team = {
     name: 'Example Team',
@@ -11,11 +13,14 @@ const TeamPage = () => {
     coach: 'Coach Name'
   };
 
+  
+
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="max-w-lg w-full bg-white p-8 rounded shadow-md">
         <div className="flex justify-center mb-8">
           <h1 className="text-3xl font-bold">Team Details</h1>
+          <button className=''>Back</button>
         </div>
         <div className="mb-4">
           <p><strong>Team Name:</strong> {team.name}</p>
