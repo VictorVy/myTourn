@@ -8,7 +8,7 @@ const NavBar = () => {
         <div className='flex space-x-4 mt-4'>
           <Link to="/tournaments" className="text-blue-500 hover:text-blue-700">Tournaments</Link>
           <a href="/" className="text-blue-500 hover:text-blue-700">Players</a>
-          <a href="/" className="text-blue-500 hover:text-blue-700">Teams</a>
+          <Link to ="/Teams" className="text-blue-500 hover:text-blue-700">Teams</Link>
           <a href="/" className="text-blue-500 hover:text-blue-700">Streams</a>
         </div>
       </nav>
