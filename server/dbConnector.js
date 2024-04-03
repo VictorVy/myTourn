@@ -225,11 +225,6 @@ async function getTeamPlayers(teamId) {
     let result;
 
     try {
-        let check = checkTables(fromList);
-        if (check.err) {
-            throw new Error("Invalid table name: " + check.table);
-        }
-
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
@@ -253,11 +248,6 @@ async function getNumTournParticipants() {
     let result;
 
     try {
-        let check = checkTables(fromList);
-        if (check.err) {
-            throw new Error("Invalid table name: " + check.table);
-        }
-
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
@@ -279,11 +269,6 @@ async function getPopularGames() {
     let result;
 
     try {
-        let check = checkTables(fromList);
-        if (check.err) {
-            throw new Error("Invalid table name: " + check.table);
-        }
-
         connection = await oracledb.getConnection();
 
         const teamGames = await connection.execute(
@@ -315,11 +300,6 @@ async function getHighestAvgViewershipPlatform() {
     let result;
 
     try {
-        let check = checkTables(fromList);
-        if (check.err) {
-            throw new Error("Invalid table name: " + check.table);
-        }
-
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
@@ -344,11 +324,6 @@ async function getMVPs() {
     let result;
 
     try {
-        let check = checkTables(fromList);
-        if (check.err) {
-            throw new Error("Invalid table name: " + check.table);
-        }
-
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
