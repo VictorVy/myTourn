@@ -1,8 +1,5 @@
 import express from "express";
-import dbConnector from "./dbConnector.js";
 import router from "./router.js";
-
-dbConnector.initializePool().then(dbConnector.test);
 
 const app = express();
 app.use(express.static("dist"));
