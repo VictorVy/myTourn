@@ -3,6 +3,7 @@ import LandingPage from "./components/pages/landingPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./components/elements/NavBar.jsx";
 import TournamentPage from "./components/pages/tournamentInfoPage.jsx";
+import Teams from "./components/pages/teams.jsx";
 
 
 
@@ -31,8 +32,12 @@ function App() {
             <Route exact path="/Tournaments" element={
               <TournamentPage></TournamentPage>
             }>
+
              
             </Route>
+            <Route exact path="/Teams" element={
+              <Teams></Teams>
+            }></Route>
           </Routes>
           </div>
       </div>
