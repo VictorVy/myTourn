@@ -7,15 +7,21 @@ import TournamentPage from "./components/pages/tournamentInfoPage.jsx";
 
 
 function App() {
-  const [apiTest, setApiTest] = useState("");
+  const [apiTest, setApiTest] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:5172/api")
+    fetch("http://localhost:5172/api/query?selectList=*&fromList=participant")
       .then((res) => res.json())
-      .then((data) => setApiTest(data.message))
+      .then((data) => setApiTest(data))
       .then(() => console.log(apiTest));
   }, []);
 
+
+  const api_regex = /^\/api.*/
+   // if using "/api/" in the pathname, don't use React Router
+   if (api_regex.test(window.location.pathname)) {
+      return <div /> // must return at least an empty div
+   } else {
   return (
     <Router>
     <div>
@@ -38,7 +44,8 @@ function App() {
       </div>
     </div>
     </Router>
-  )
+  ) 
+  }
 }
 
 export default App
