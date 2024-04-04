@@ -1,29 +1,30 @@
 import oracledb from "oracledb";
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
+oracledb.autoCommit = true;
 
 // sanitization with help from docs at https://node-oracledb.readthedocs.io/en/latest/user_guide/bind.html#binding-column-and-table-names-in-queries
-const validTables = ["Brodcast",
-                    "HostPlatform",
-                    "ESportsOrg",
-                    "Game",
-                    "IndividualGame",
-                    "TeamGame",
-                    "Organizer",
-                    "Participant",
-                    "Player",
-                    "Team",
-                    "Sponsor",
-                    "Tournament",
-                    "StartDate",
-                    "Venue",
-                    "PostalCode",
-                    "Contract",
-                    "Joins",
-                    "Member",
-                    "TournamentFunding",
-                    "TeamPlays",
-                    "PlayerPlays"];
+const validTables = ["BROADCAST",
+                    "HOSTPLATFORM",
+                    "ESPORTSORG",
+                    "GAME",
+                    "INDIVIDUALGAME",
+                    "TEAMGAME",
+                    "ORGANIZER",
+                    "PARTICIPANT",
+                    "PLAYER",
+                    "TEAM",
+                    "SPONSOR",
+                    "TOURNAMENT",
+                    "STARTDATE",
+                    "VENUE",
+                    "POSTALCODE",
+                    "CONTRACT",
+                    "JOINS",
+                    "MEMBER",
+                    "TOURNAMENTFUNDING",
+                    "TEAMPLAYS",
+                    "PLAYERPLAYS"];
 
 // with help from guide at https://github.students.cs.ubc.ca/CPSC304/CPSC304_Node_Project/
 
@@ -60,26 +61,8 @@ async function closePool() {
     }
 }
 
-async function test() {
-    let connection = await oracledb.getConnection();
-    console.log("Connection started");
-
-    // await connection.execute(
-    //     `CREATE TABLE test_victor (id NUMBER, name VARCHAR2(20))`
-    // );
-
-    const names = await connection.execute(
-        `SELECT * FROM test_victor`
-    );
-
-    console.log(names);
-    await connection.close();
-    console.log("Connection closed");
-}
-
 function checkTables(tableList) {
-    let tables = tableList.split(",").map(table => table.trim());
-
+    let tables = tableList.split(",").map(table => table.trim().toUpperCase());
     for (let table of tables) {
         if (!validTables.includes(table)) {
             return { err: true, table: table };
@@ -134,7 +117,7 @@ async function executeInsert(table, columns, valuesArr) {
     let result;
 
     try {
-        let check = checkTables(fromList);
+        let check = checkTables(table);
         if (check.err) {
             throw new Error("Invalid table name: " + check.table);
         }
@@ -150,7 +133,6 @@ async function executeInsert(table, columns, valuesArr) {
         query += " SELECT * FROM dual";
 
         result = await connection.execute(query);
-
     } catch (err) {
         console.error(err);
         result = err;
@@ -165,13 +147,9 @@ async function executeUpdate(table, setList, whereClause) {
     let result;
 
     try {
-        let check = checkTables(fromList);
+        let check = checkTables(table);
         if (check.err) {
             throw new Error("Invalid table name: " + check.table);
-        }
-
-        if (!isValid(table)) {
-            throw new Error("Invalid table name");
         }
 
         connection = await oracledb.getConnection();
@@ -197,7 +175,7 @@ async function executeDelete(table, whereClause) {
     let result;
 
     try {
-        let check = checkTables(fromList);
+        let check = checkTables(table);
         if (check.err) {
             throw new Error("Invalid table name: " + check.table);
         }
@@ -351,7 +329,10 @@ process
     .once("SIGINT", closePool);
 
 export default { initializePool,
-                 test,
+                 executeQuery,
+                 executeInsert,
+                 executeUpdate,
+                 executeDelete,
                  getTeamPlayers,
                  getNumTournParticipants,
                  getPopularGames,

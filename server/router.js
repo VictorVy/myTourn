@@ -1,13 +1,36 @@
 import express from "express";
 import dbConnector from "./dbConnector.js";
 
-dbConnector.initializePool().then(dbConnector.test);
+dbConnector.initializePool();
 
 const router = express.Router();
 
 router.get("/api", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
     res.json({ message: "Hello from server!" });
+});
+
+router.get("/api/query", async (req, res) => {
+    const { selectList, fromList, whereClause, groupList, havingClause, orderList } = req.query;
+    const result = await dbConnector.executeQuery(selectList, fromList, whereClause, groupList, havingClause, orderList);
+    res.json(result);
+});
+
+router.post("/api/insert", async (req, res) => {
+    const { table, columns, valuesArr } = req.body;
+    const result = await dbConnector.executeInsert(table, columns, valuesArr);
+    res.json(result);
+});
+
+router.patch("/api/update", async (req, res) => {
+    const { table, setList, whereClause } = req.body;
+    const result = await dbConnector.executeUpdate(table, setList, whereClause);
+    res.json(result);
+});
+
+router.delete("/api/delete", async (req, res) => {
+    const { table, whereClause } = req.body;
+    const result = await dbConnector.executeDelete(table, whereClause);
+    res.json(result);
 });
 
 router.get("/api/teamPlayers/:teamId", async (req, res) => {
