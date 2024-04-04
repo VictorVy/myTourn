@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./components/elements/NavBar.jsx";
 import Teams from "./components/pages/teams.jsx";
 import Players from "./components/pages/players.jsx";
+import StreamsPage from "./components/pages/streams.jsx";
 
 
 
@@ -40,6 +41,9 @@ function App() {
             ></Route>
             <Route exact path="/Teams" element={
               <Teams></Teams>
+            }></Route>
+            <Route exact path="/Streams" element={
+              <StreamsPage></StreamsPage>
             }></Route>
           </Routes>
           </div>

@@ -46,6 +46,13 @@ const Players = () => {
     setNewPlayer({ id: null, displayName: '', firstName: '', lastName: '', age: '' });
   };
 
+  const deletePlayer = (id) => {
+    if (!selectedPlayer) return;
+    const filteredPlayers = players.filter((player) => player.id !== selectedPlayer.id);
+    setPlayers(filteredPlayers);
+    setSelectedPlayer(null);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewPlayer({ ...newPlayer, [name]: value });
@@ -90,6 +97,9 @@ const Players = () => {
         <button onClick={addPlayer} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
           Add Player
         </button>
+        <button onClick={deletePlayer} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Delete
+          </button>
       </div>
       <ul className="space-y-2">
         {players.map((player, index) => (

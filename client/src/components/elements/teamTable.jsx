@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TeamTable = ({tournament}) => {
+const TeamTable = ({tournament, }) => {
   const [teams, setTeams] = useState(
     tournament.teams
   );
