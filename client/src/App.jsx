@@ -10,7 +10,7 @@ function App() {
   const [apiTest, setApiTest] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:5172/api/query?selectList=*&fromList=participant")
+    fetch("http://localhost:5173/api")
       .then((res) => res.json())
       .then((data) => setApiTest(data))
       .then(() => console.log(apiTest));
