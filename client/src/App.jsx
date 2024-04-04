@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react"
+import LandingPage from "./components/pages/landingPage";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import NavBar from "./components/elements/NavBar.jsx";
+import TournamentPage from "./components/pages/tournamentInfoPage.jsx";
+
+
 
 function App() {
   const [apiTest, setApiTest] = useState("");
@@ -10,10 +16,27 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div className="text-red-800 font-bold">Hello Victor and Ronald!</div>
-      <div className="text-blue-800 font-bold">{(apiTest === "") ? <p>Loading...</p> : <p>{apiTest}</p>}</div>
-    </>
+    <Router>
+    <div>
+      <div>
+          <NavBar></NavBar>
+          <div className="">
+            <Routes>
+              <Route exact path="/" element = {
+                <><LandingPage></LandingPage> </>
+              }>
+
+            </Route>
+            <Route exact path="/Tournaments" element={
+              <TournamentPage></TournamentPage>
+            }>
+             
+            </Route>
+          </Routes>
+          </div>
+      </div>
+    </div>
+    </Router>
   )
 }
 
