@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react"
 import LandingPage from "./components/pages/landingPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./components/elements/NavBar.jsx";
-import TournamentPage from "./components/pages/tournamentInfoPage.jsx";
 import Teams from "./components/pages/teams.jsx";
+import Players from "./components/pages/players.jsx";
+import StreamsPage from "./components/pages/streams.jsx";
 
 
 
@@ -33,16 +34,16 @@ function App() {
               <Route exact path="/" element = {
                 <><LandingPage></LandingPage> </>
               }>
-
-            </Route>
-            <Route exact path="/Tournaments" element={
-              <TournamentPage></TournamentPage>
-            }>
-
-             
-            </Route>
+              </Route>
+                <Route exact path="/Players" element={
+              <Players></Players>
+            } 
+            ></Route>
             <Route exact path="/Teams" element={
               <Teams></Teams>
+            }></Route>
+            <Route exact path="/Streams" element={
+              <StreamsPage></StreamsPage>
             }></Route>
           </Routes>
           </div>

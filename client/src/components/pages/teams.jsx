@@ -40,6 +40,12 @@ const Teams = () => {
     setNewTeam({ name: '', players: [], coach: '' });
   };
 
+  const deleteTeam = (id) => {
+    const newTeams = [...teams];
+    newTeams.splice(id, 1);
+    setTeams(newTeams);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewTeam({ ...newTeam, [name]: value });
@@ -67,6 +73,9 @@ const Teams = () => {
         />
         <button onClick={addTeam} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
           Add Team
+        </button>
+        <button onClick={deleteTeam} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+          Delete Team
         </button>
       </div>
       <ul className="space-y-2">

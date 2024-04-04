@@ -1,12 +1,9 @@
 import { useState } from "react";
 
 useState
-const SoloTable = () => {
-    const [attendees, setAttendees] = useState([
-        { id: 1, displayName: 'opsine', firstName: 'John', lastName: 'Doe', age: 25 },
-        { id: 2, displayName: 'opsine', firstName: 'Jane', lastName: 'Smith', age: 30 },
-        { id: 3, displayName: 'opsine', firstName: 'Alice', lastName: 'Johnson', age: 22 },
-      ]);
+const SoloTable = ({tournament}) => {
+    const [attendees, setAttendees] = useState(tournament.players
+      );
 
       const addAttendee = () => {
         setAttendees([...attendees, { firstName: 'I am', lastName: 'Added', age: 0 }]);
@@ -24,7 +21,7 @@ const SoloTable = () => {
         setAttendees(newAttendees);
       };
     return (  
-        <div className="bg-gray-100 min-h-screen">
+        <div className="bg-gray-100">
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="flex justify-between mb-4">
           <button onClick={addAttendee} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
