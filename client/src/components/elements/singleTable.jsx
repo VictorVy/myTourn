@@ -1,12 +1,9 @@
 import { useState } from "react";
 
 useState
-const SoloTable = () => {
-    const [attendees, setAttendees] = useState([
-        { id: 1, displayName: 'opsine', firstName: 'John', lastName: 'Doe', age: 25 },
-        { id: 2, displayName: 'opsine', firstName: 'Jane', lastName: 'Smith', age: 30 },
-        { id: 3, displayName: 'opsine', firstName: 'Alice', lastName: 'Johnson', age: 22 },
-      ]);
+const SoloTable = ({tournament}) => {
+    const [attendees, setAttendees] = useState(tournament.players
+      );
 
       const addAttendee = () => {
         setAttendees([...attendees, { firstName: 'I am', lastName: 'Added', age: 0 }]);

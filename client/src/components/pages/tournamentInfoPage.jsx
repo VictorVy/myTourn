@@ -4,18 +4,10 @@ import TeamTable from '../elements/teamTable';
 import { Link } from 'react-router-dom';
 
 
-const TournamentPage = () => {
-    const tournament = {
-        name: "Sample Tournament",
-        broadcast: {host: "vgbootcamp", platform:"twitch", viewership:"64"}, 
-        sponsor: {SponsorName: "Liquid", id: 2, amount: 1221},
-        game: { name: "Sample Game", type: "Team-Based", size: 1, numTeams: 1 },
-        venue: {streetAddress: "5555 clint", city: "burnaby", country: "Canada", postalCode: "V6P20D"}
-      };
-     
-
+const TournamentPage = ({ tournament }) => {
+    
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100">
       <div className="max-w-4xl mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-4">{tournament.name}</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

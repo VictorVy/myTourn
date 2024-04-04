@@ -1,13 +1,7 @@
 import React from 'react';
 
-const PlayerPage = () => {
-  const player = {
-    displayName: 'Player1',
-    firstName: 'John',
-    lastName: 'Doe',
-    age: 25,
-    Team:"null"
-  };
+const PlayerPage = ({player}) => {
+  
 
   const sponsor = {
     name: 'Example Sponsor',
@@ -22,7 +16,6 @@ const PlayerPage = () => {
       <div className="max-w-lg w-full bg-white p-8 rounded shadow-md">
         <div className="flex justify-center mb-8">
           <h1 className="text-3xl font-bold">Player Details</h1>
-          <button className=''>Back</button>
         </div>
         <div className="mb-4">
           <p><strong>Display Name:</strong> {player.displayName}</p>

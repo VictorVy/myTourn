@@ -5,11 +5,11 @@ import React from 'react';
 const TeamPage = ({team}) => {
   // const team = {
   //   name: 'Example Team',
-  //   players: [
-  //     { id: 1, displayName: 'Player1', firstName: 'John', lastName: 'Doe', age: 25 },
-  //     { id: 2, displayName: 'Player2', firstName: 'Jane', lastName: 'Smith', age: 30 },
-  //     { id: 3, displayName: 'Player3', firstName: 'Alice', lastName: 'Johnson', age: 22 }
-  //   ],
+    // players: [
+    //   { id: 1, displayName: 'Player1', firstName: 'John', lastName: 'Doe', age: 25 },
+    //   { id: 2, displayName: 'Player2', firstName: 'Jane', lastName: 'Smith', age: 30 },
+    //   { id: 3, displayName: 'Player3', firstName: 'Alice', lastName: 'Johnson', age: 22 }
+    // ],
   //   coach: 'Coach Name'
   // };
 
