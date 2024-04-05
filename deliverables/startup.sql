@@ -27,7 +27,7 @@ CREATE TABLE Participant (id INT PRIMARY KEY, displayName VARCHAR(50));
 CREATE TABLE Sponsor (id INT PRIMARY KEY, name VARCHAR(50));
 CREATE TABLE Organizer (id INT PRIMARY KEY, name VARCHAR(50), email VARCHAR(50));
 CREATE TABLE Player (id INT PRIMARY KEY, firstName VARCHAR(50), lastName VARCHAR(50), age INT, FOREIGN KEY (id) REFERENCES Participant(id) ON DELETE CASCADE);
-CREATE TABLE Tournament (id INT PRIMARY KEY, name VARCHAR(50), startDate DATE, endDate DATE, streetAddress VARCHAR(30), city VARCHAR(50), country VARCHAR(50), organizerid INT, FOREIGN KEY (organizerid) REFERENCES Organizer(id));
+CREATE TABLE Tournament (id INT PRIMARY KEY, name VARCHAR(50), startDate DATE, endDate DATE, streetAddress VARCHAR(30), city VARCHAR(50), country VARCHAR(50), organizerid INT, gameid INT, FOREIGN KEY (organizerid) REFERENCES Organizer(id), FOREIGN KEY (gameid) REFERENCES Game(id));
 CREATE TABLE Venue (streetAddress VARCHAR(30), postalCode CHAR(10), PRIMARY KEY (streetAddress, postalCode));
 CREATE TABLE PostalCode (postalCode CHAR(10) PRIMARY KEY, city VARCHAR(50), country VARCHAR(50));
 CREATE TABLE Contract (pid INT PRIMARY KEY, orgid INT, startDate DATE, endDate DATE, amount INT, FOREIGN KEY (pid) REFERENCES Participant(id) ON DELETE CASCADE, FOREIGN KEY (orgid) REFERENCES ESportsOrg(id) ON DELETE CASCADE);
@@ -36,7 +36,7 @@ CREATE TABLE IndividualGame (id INT PRIMARY KEY, FOREIGN KEY (id) REFERENCES Gam
 CREATE TABLE Team (id INT PRIMARY KEY, coach VARCHAR(50), FOREIGN KEY (id) REFERENCES Participant(id) ON DELETE CASCADE);
 CREATE TABLE TeamGame (id INT PRIMARY KEY, teamSize INT, numTeams INT, FOREIGN KEY (id) REFERENCES Game(id) ON DELETE CASCADE);
 CREATE TABLE StartDate (startDate DATE PRIMARY KEY, year INT);
-CREATE TABLE Joins (pid INT, tid INT, PRIMARY KEY (pid, tid), FOREIGN KEY (pid) REFERENCES Participant(id) ON DELETE CASCADE, FOREIGN KEY (tid) REFERENCES Team(id) ON DELETE CASCADE);
+CREATE TABLE Joins (pid INT, tid INT, PRIMARY KEY (pid, tid), FOREIGN KEY (pid) REFERENCES Participant(id) ON DELETE CASCADE, FOREIGN KEY (tid) REFERENCES Tournament(id) ON DELETE CASCADE);
 CREATE TABLE Member (playerid INT PRIMARY KEY, teamid INT NOT NULL, FOREIGN KEY (playerid) REFERENCES Player(id) ON DELETE CASCADE, FOREIGN KEY (teamid) REFERENCES Team(id) ON DELETE CASCADE);
 CREATE TABLE TournamentFunding (tid INT, sid INT, amount INT, PRIMARY KEY (tid, sid), FOREIGN KEY (tid) REFERENCES Tournament(id) ON DELETE CASCADE, FOREIGN KEY (sid) REFERENCES Sponsor(id) ON DELETE CASCADE);
 CREATE TABLE TeamPlays (teamid INT, gameid INT, PRIMARY KEY (teamid, gameid), FOREIGN KEY (teamid) REFERENCES Team(id) ON DELETE CASCADE, FOREIGN KEY (gameid) REFERENCES TeamGame(id) ON DELETE CASCADE);
@@ -60,12 +60,13 @@ INSERT INTO HostPlatform (host, platform) VALUES ('PAX Stream', 'Facebook Live')
 INSERT INTO HostPlatform (host, platform) VALUES ('DreamHack Online', 'Mixer');
 INSERT INTO HostPlatform (host, platform) VALUES ('BlizzCon Virtual', 'SteamTV');
 
-INSERT INTO ESportsOrg (id, name, region, contact) VALUES (1, 'Faze', 'North America', 'Contact1');
-INSERT INTO ESportsOrg (id, name, region, contact) VALUES (2, 'Liquid', 'North America', 'Contact2');
-INSERT INTO ESportsOrg (id, name, region, contact) VALUES (3, 'Cloud9', 'North America', 'Contact3');
-INSERT INTO ESportsOrg (id, name, region, contact) VALUES (4, 'TSM', 'South America', 'Contact4');
-INSERT INTO ESportsOrg (id, name, region, contact) VALUES (5, 'G2', 'South America', 'Contact5');
+INSERT INTO ESportsOrg (id, name, region, contact) VALUES (1, 'Faze', 'North America', 'faze@faze.com');
+INSERT INTO ESportsOrg (id, name, region, contact) VALUES (2, 'Liquid', 'North America', 'liquid@liquid.com');
+INSERT INTO ESportsOrg (id, name, region, contact) VALUES (3, 'Cloud9', 'North America', 'cloud9@cloud9.com');
+INSERT INTO ESportsOrg (id, name, region, contact) VALUES (4, 'TSM', 'South America', 'tsm@tsm.com');
+INSERT INTO ESportsOrg (id, name, region, contact) VALUES (5, 'G2', 'South America', 'g2@g2.com');
 
+-- team games
 INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8801, 'Valorant', 'FPS', 'Riot Games', 2020);
 INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8802, 'CS:GO', 'FPS', 'Valve Corporation', 2012);
 INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8803, 'League of Legends', 'MOBA', 'Riot Games', 2009);
@@ -73,42 +74,46 @@ INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8804, 'Dota 2
 INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8805, 'Overwatch', 'FPS', 'Blizzard Entertainment', 2016);
 INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8806, 'Apex Legends', 'Battle royale', 'Respawn Entertainment', 2019);
 INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8807, 'Rainbow Six Siege', 'FPS', 'Ubisoft', 2015);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8808, 'Super Smash Bros. Ultimate', 'Fighting', 'Nintendo', 2018);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8809, 'PUBG', 'Battle royale', 'PUBG Corporation', 2017);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8810, 'Call of Duty: Warzone', 'Battle royale', 'Infinity Ward', 2020);
 
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8811, 'Valorant', 'FPS', 'Riot Games', 2020);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8812, 'CS:GO', 'FPS', 'Valve Corporation', 2012);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8813, 'League of Legends', 'MOBA', 'Riot Games', 2009);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8814, 'Dota 2', 'MOBA', 'Valve Corporation', 2013);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8815, 'Overwatch', 'FPS', 'Blizzard Entertainment', 2016);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8816, 'Apex Legends', 'Battle royale', 'Respawn Entertainment', 2019);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8817, 'Rainbow Six Siege', 'FPS', 'Ubisoft', 2015);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8818, 'Super Smash Bros. Ultimate', 'Fighting', 'Nintendo', 2018);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8819, 'PUBG', 'Battle royale', 'PUBG Corporation', 2017);
-INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8820, 'Call of Duty: Warzone', 'Battle royale', 'Infinity Ward', 2020);
+-- Single-player Games
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8808, 'The Witcher 3: Wild Hunt', 'RPG', 'CD Projekt Red', 2015);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8809, 'The Legend of Zelda: Breath of the Wild', 'Action-adventure', 'Nintendo', 2017);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8810, 'Dark Souls III', 'Action RPG', 'FromSoftware', 2016);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8811, 'God of War', 'Action-adventure', 'Sony Interactive Entertainment', 2018);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8812, 'Skyrim', 'RPG', 'Bethesda Game Studios', 2011);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8813, 'Red Dead Redemption 2', 'Action-adventure', 'Rockstar Games', 2018);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8814, 'Horizon Zero Dawn', 'Action RPG', 'Guerrilla Games', 2017);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8815, 'Sekiro: Shadows Die Twice', 'Action-adventure', 'FromSoftware', 2019);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8816, 'Death Stranding', 'Action', 'Kojima Productions', 2019);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8817, 'Cyberpunk 2077', 'RPG', 'CD Projekt Red', 2020);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8818, 'Hollow Knight', 'Metroidvania', 'Team Cherry', 2017);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8819, 'Celeste', 'Platformer', 'Maddy Makes Games', 2018);
+INSERT INTO Game (id, name, genre, company, yearPublished) VALUES (8820, 'Control', 'Action-adventure', 'Remedy Entertainment', 2019);
 
 
-INSERT INTO Participant (id, displayName) VALUES (1001, 'AceHunter');
-INSERT INTO Participant (id, displayName) VALUES (1002, 'BlazeKnight');
-INSERT INTO Participant (id, displayName) VALUES (1003, 'CrimsonFury');
-INSERT INTO Participant (id, displayName) VALUES (1004, 'DeltaEcho');
-INSERT INTO Participant (id, displayName) VALUES (1005, 'EchoRanger');
-INSERT INTO Participant (id, displayName) VALUES (1006, 'FoxtrotAlpha');
-INSERT INTO Participant (id, displayName) VALUES (1007, 'GammaHawk');
-INSERT INTO Participant (id, displayName) VALUES (1008, 'HyperIon');
-INSERT INTO Participant (id, displayName) VALUES (1009, 'IvoryWolf');
-INSERT INTO Participant (id, displayName) VALUES (1010, 'JadeFalcon');
-INSERT INTO Participant (id, displayName) VALUES (1011, 'KiloTango');
-INSERT INTO Participant (id, displayName) VALUES (1012, 'LimaCharlie');
-INSERT INTO Participant (id, displayName) VALUES (1013, 'MysticDragon');
-INSERT INTO Participant (id, displayName) VALUES (1014, 'NovaPirate');
-INSERT INTO Participant (id, displayName) VALUES (1015, 'OmegaSpartan');
-INSERT INTO Participant (id, displayName) VALUES (1016, 'PhantomKnight');
-INSERT INTO Participant (id, displayName) VALUES (1017, 'QuartzSpecter');
-INSERT INTO Participant (id, displayName) VALUES (1018, 'RazorEdge');
-INSERT INTO Participant (id, displayName) VALUES (1019, 'StormSeeker');
-INSERT INTO Participant (id, displayName) VALUES (1020, 'TitaniumFist');
+-- teams
+INSERT INTO Participant (id, displayName) VALUES (1001, 'TEAM AceHunter');
+INSERT INTO Participant (id, displayName) VALUES (1002, 'TEAM BlazeKnight');
+INSERT INTO Participant (id, displayName) VALUES (1003, 'TEAM CrimsonFury');
+INSERT INTO Participant (id, displayName) VALUES (1004, 'TEAM DeltaEcho');
+INSERT INTO Participant (id, displayName) VALUES (1005, 'TEAM EchoRanger');
+
+-- solo
+INSERT INTO Participant (id, displayName) VALUES (1006, 'SOLO FoxtrotAlpha');
+INSERT INTO Participant (id, displayName) VALUES (1007, 'SOLO GammaHawk');
+INSERT INTO Participant (id, displayName) VALUES (1008, 'SOLO HyperIon');
+INSERT INTO Participant (id, displayName) VALUES (1009, 'SOLO IvoryWolf');
+INSERT INTO Participant (id, displayName) VALUES (1010, 'SOLO JadeFalcon');
+INSERT INTO Participant (id, displayName) VALUES (1011, 'SOLO KiloTango');
+INSERT INTO Participant (id, displayName) VALUES (1012, 'SOLO LimaCharlie');
+INSERT INTO Participant (id, displayName) VALUES (1013, 'SOLO MysticDragon');
+INSERT INTO Participant (id, displayName) VALUES (1014, 'SOLO NovaPirate');
+INSERT INTO Participant (id, displayName) VALUES (1015, 'SOLO OmegaSpartan');
+INSERT INTO Participant (id, displayName) VALUES (1016, 'SOLO PhantomKnight');
+INSERT INTO Participant (id, displayName) VALUES (1017, 'SOLO QuartzSpecter');
+INSERT INTO Participant (id, displayName) VALUES (1018, 'SOLO RazorEdge');
+INSERT INTO Participant (id, displayName) VALUES (1019, 'SOLO StormSeeker');
+INSERT INTO Participant (id, displayName) VALUES (1020, 'SOLO TitaniumFist');
 
 INSERT INTO Sponsor (id, name) VALUES (1, 'HyperX Gaming');
 INSERT INTO Sponsor (id, name) VALUES (2, 'Red Bull Esports');
@@ -156,6 +161,7 @@ INSERT INTO IndividualGame (id) VALUES (8813);
 INSERT INTO IndividualGame (id) VALUES (8814);
 INSERT INTO IndividualGame (id) VALUES (8815);
 INSERT INTO IndividualGame (id) VALUES (8816); 
+INSERT INTO IndividualGame (id) VALUES (8817); 
 INSERT INTO IndividualGame (id) VALUES (8818);
 INSERT INTO IndividualGame (id) VALUES (8819);
 
@@ -176,23 +182,26 @@ INSERT INTO Member (playerid, teamid) VALUES (1008, 1002);
 INSERT INTO Member (playerid, teamid) VALUES (1009, 1002);
 INSERT INTO Member (playerid, teamid) VALUES (1010, 1002);
 
-INSERT INTO Joins (pid, tid) VALUES (1001, 1001);
-INSERT INTO Joins (pid, tid) VALUES (1002, 1002);
-INSERT INTO Joins (pid, tid) VALUES (1003, 1003);
-INSERT INTO Joins (pid, tid) VALUES (1004, 1004);
-INSERT INTO Joins (pid, tid) VALUES (1005, 1005);
-
 INSERT INTO Organizer (id, name, email) VALUES (1, 'Alex Harper', 'alex@example.com');
 INSERT INTO Organizer (id, name, email) VALUES (2, 'Jordan Lee', 'jordan@example.com');
 INSERT INTO Organizer (id, name, email) VALUES (3, 'Casey Kim', 'casey@example.com');
 INSERT INTO Organizer (id, name, email) VALUES (4, 'Morgan Bailey', 'morgan@example.com');
 INSERT INTO Organizer (id, name, email) VALUES (5, 'Taylor Chen', 'taylor@example.com');
 
-INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid) VALUES (1, 'Tournament1', TO_DATE('2024-01-01', 'YYYY-MM-DD'), TO_DATE('2024-01-01', 'YYYY-MM-DD'), '123 King St', 'Toronto', 'Canada', 1);
-INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid) VALUES (2, 'Tournament2', TO_DATE('2024-02-01', 'YYYY-MM-DD'), TO_DATE('2024-02-01', 'YYYY-MM-DD'), '456 Granville St', 'Vancouver', 'Canada', 2);
-INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid) VALUES (3, 'Tournament3', TO_DATE('2024-03-01', 'YYYY-MM-DD'), TO_DATE('2024-03-01', 'YYYY-MM-DD'), '789 Saint Catherine St', 'Montreal', 'Canada', 3);
-INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid) VALUES (4, 'Tournament4', TO_DATE('2024-04-01', 'YYYY-MM-DD'), TO_DATE('2024-04-01', 'YYYY-MM-DD'), '101 Parliament Hill', 'Ottawa', 'Canada', 4);
-INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid) VALUES (5, 'Tournament5', TO_DATE('2024-05-01', 'YYYY-MM-DD'), TO_DATE('2024-05-01', 'YYYY-MM-DD'), '202 Stephen Ave', 'Calgary', 'Canada', 5);
+INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid, gameid) VALUES (1, 'Solo Cup', TO_DATE('2024-01-01', 'YYYY-MM-DD'), TO_DATE('2024-01-01', 'YYYY-MM-DD'), '123 King St', 'Toronto', 'Canada', 1, 8808);
+INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid, gameid) VALUES (2, 'Solo Tournament', TO_DATE('2024-02-01', 'YYYY-MM-DD'), TO_DATE('2024-02-01', 'YYYY-MM-DD'), '456 Granville St', 'Vancouver', 'Canada', 2, 8809);
+INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid, gameid) VALUES (3, 'Team Cup', TO_DATE('2024-03-01', 'YYYY-MM-DD'), TO_DATE('2024-03-01', 'YYYY-MM-DD'), '789 Saint Catherine St', 'Montreal', 'Canada', 3, 8810);
+INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid, gameid) VALUES (4, 'Team Tournament4', TO_DATE('2024-04-01', 'YYYY-MM-DD'), TO_DATE('2024-04-01', 'YYYY-MM-DD'), '101 Parliament Hill', 'Ottawa', 'Canada', 4, 8804);
+INSERT INTO Tournament (id, name, startDate, endDate, streetAddress, city, country, organizerid, gameid) VALUES (5, 'Team Tournament', TO_DATE('2024-05-01', 'YYYY-MM-DD'), TO_DATE('2024-05-01', 'YYYY-MM-DD'), '202 Stephen Ave', 'Calgary', 'Canada', 5, 8805);
+
+INSERT INTO Joins (pid, tid) VALUES (1001, 1);
+INSERT INTO Joins (pid, tid) VALUES (1001, 2);
+INSERT INTO Joins (pid, tid) VALUES (1001, 3);
+INSERT INTO Joins (pid, tid) VALUES (1002, 1);
+INSERT INTO Joins (pid, tid) VALUES (1002, 2);
+INSERT INTO Joins (pid, tid) VALUES (1003, 3);
+INSERT INTO Joins (pid, tid) VALUES (1004, 4);
+INSERT INTO Joins (pid, tid) VALUES (1005, 5);
 
 INSERT INTO Broadcast (tid, host, viewership) VALUES (1, 'GameCon Live', 1000);
 INSERT INTO Broadcast (tid, host, viewership) VALUES (2, 'GameCon Live', 2000);
@@ -221,10 +230,24 @@ INSERT INTO TeamPlays (teamid, gameid) VALUES (1005, 8805);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8808);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8809);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8810);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8811);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8812);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8813);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8814);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8815);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8816);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8817);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8818);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8819);
+
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8809);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8810);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8814);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8815);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8811);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8812);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1004, 8813);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8814);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8815);
+
+commit;
