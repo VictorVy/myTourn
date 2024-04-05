@@ -12,6 +12,17 @@ const TeamPage = ({team, addTeamPLayer}) => {
     { id: 6, displayName: 'Player3', firstName: 'Alice', lastName: 'Johnson', age: 22 }
   ]);
 
+  // /api/teamPlayers/:teamId
+  // fetch("http://localhost:5172/api/teamPlayers/" + team.id)
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     console.log("/api/teamPlayers/:teamId result")
+  //     console.log(data);
+  //     setNewPlayers(data);
+  //   });
+
+
+
   const handleSelectChange = (event) => {
     setSelectedPlayer(event.target.value);
   };

@@ -28,6 +28,13 @@ const Players = () => {
     }
   ]);
 
+  fetch("http://localhost:5172/api/query?selectList=*&fromList=Player")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("/api/query result")
+      console.log(data);
+    });
+
   const [newPlayer, setNewPlayer] = useState({
     id: null,
     displayName: '',
@@ -43,7 +50,26 @@ const Players = () => {
   const addPlayer = () => {
     const updatedPlayers = [...players, newPlayer];
     setPlayers(updatedPlayers);
-    setNewPlayer({ id: null, displayName: '', firstName: '', lastName: '', age: '' });
+    setNewPlayer({ id: 4, displayName: 'testFIrst', firstName: '', lastName: '', age: '' });
+
+    fetch("http://localhost:5172/api/insert", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      table: "Participant",
+      columns: "id, firstName, lastName, age",
+      valuesArr: ["4, 'testFirst, testLast, 6'"]
+    })
+  })
+
+  fetch("http://localhost:5172/api/query?selectList=*&fromList=Player")
+    .then((res) => res.json())
+    .then((data) => {
+      //setPlayers(data);
+      console.log(data);
+    });
   };
 
   const deletePlayer = (id) => {
@@ -51,12 +77,61 @@ const Players = () => {
     const filteredPlayers = players.filter((player) => player.id !== selectedPlayer.id);
     setPlayers(filteredPlayers);
     setSelectedPlayer(null);
+
+    fetch("http://localhost:5172/api/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      table: "Player",
+      whereClause: "id = " + id
+    })
+  })
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewPlayer({ ...newPlayer, [name]: value });
   };
+
+  const [mvp, setMvp] = useState([
+    {
+      id: 1,
+      displayName: 'Opsine',
+      firstName: 'John',
+      lastName: 'Doe',
+      age: 25
+    },
+    {
+      id: 2,
+      displayName: 'Viktor',
+      firstName: 'Jane',
+      lastName: 'Smith',
+      age: 30
+    }]
+  )
+
+  fetch("http://localhost:5172/api/mvps")
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("/api/mvps result")
+    console.log(data);
+    //setMvp(data);
+  });
+
+  const [checkder, setCheckder] = useState(false);
+
+  const handleChecked = () => {
+    if(!checkder) {
+    console.log('d');
+    setCheckder(true);
+    }
+    else {
+      console.log('d');
+      setCheckder(false);
+    }
+  }
 
   return (
     <div className="max-w-md mx-auto">
@@ -65,8 +140,8 @@ const Players = () => {
         <input
           type="text"
           name="displayName"
-          value={newPlayer.displayName}
-          placeholder="Player Display Name"
+          value={newPlayer.null}
+          placeholder="Player ID"
           onChange={handleChange}
           className="border rounded py-2 px-3 mr-2"
         />
@@ -112,6 +187,30 @@ const Players = () => {
           </li>
         ))}
       </ul>
+      <div className="mb-4">
+        <input
+          type="checkbox"
+          id="Highest Viwership"
+          checked={checkder}
+          onChange={handleChecked}
+          className="mr-2"
+        />
+        <label htmlFor="orderByViewership">Show MVP</label>
+        {checkder && 
+            <div>
+              {mvp.map((displayName, index) => (
+          <li
+            key={index}
+            className="flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300"
+        
+          >
+            <span>{displayName.displayName}</span>
+          </li>
+        ))}
+              
+            </div>
+        }
+      </div>
       {selectedPlayer && <PlayerPage player={selectedPlayer} />}
     </div>
   );

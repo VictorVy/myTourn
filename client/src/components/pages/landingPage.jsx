@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TournamentPage from "./tournamentInfoPage";
 import TeamTable from "../elements/teamTable";
 import SoloTable from "../elements/singleTable";
@@ -36,6 +36,16 @@ const LandingPage = () => {
     },
   ]);
 
+  // useEffect(() => {
+  //   fetch("http://localhost:5172/api/query?selectList=*&fromList=Tournaments")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setTournaments(data);
+  //       console.log("/api result")
+  //       console.log(data.message);
+  //     })
+  // }, []);
+
   const [selectedTourney, setSelectedTourney] = useState(null);
   const tournamentInfo = { id: 5, name: "the theourneye" };
 
@@ -54,6 +64,18 @@ const LandingPage = () => {
       venue: { streetAddress: "", city: "", country: "", postalCode: "" },
       id: tournaments.length + 1,
     };
+  //   fetch("http://localhost:5172/api/insert", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   },
+  //   body: JSON.stringify({
+  //     table: "Tournament",
+  //     columns: "id, displayname",
+  //     valuesArr: ["999, 'test999'",
+  //                 "9999, 'test1000'"]
+  //   })
+  // })
     setTournaments([...tournaments, newTournament]);
   };
 
