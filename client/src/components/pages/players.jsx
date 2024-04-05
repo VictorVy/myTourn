@@ -95,6 +95,44 @@ const Players = () => {
     setNewPlayer({ ...newPlayer, [name]: value });
   };
 
+  const [mvp, setMvp] = useState([
+    {
+      id: 1,
+      displayName: 'Opsine',
+      firstName: 'John',
+      lastName: 'Doe',
+      age: 25
+    },
+    {
+      id: 2,
+      displayName: 'Viktor',
+      firstName: 'Jane',
+      lastName: 'Smith',
+      age: 30
+    }]
+  )
+
+  fetch("http://localhost:5172/api/mvps")
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("/api/mvps result")
+    console.log(data);
+    //setMvp(data);
+  });
+
+  const [checkder, setCheckder] = useState(false);
+
+  const handleChecked = () => {
+    if(!checkder) {
+    console.log('d');
+    setCheckder(true);
+    }
+    else {
+      console.log('d');
+      setCheckder(false);
+    }
+  }
+
   return (
     <div className="max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-4">Players</h2>
@@ -149,6 +187,30 @@ const Players = () => {
           </li>
         ))}
       </ul>
+      <div className="mb-4">
+        <input
+          type="checkbox"
+          id="Highest Viwership"
+          checked={checkder}
+          onChange={handleChecked}
+          className="mr-2"
+        />
+        <label htmlFor="orderByViewership">Show MVP</label>
+        {checkder && 
+            <div>
+              {mvp.map((displayName, index) => (
+          <li
+            key={index}
+            className="flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300"
+        
+          >
+            <span>{displayName.displayName}</span>
+          </li>
+        ))}
+              
+            </div>
+        }
+      </div>
       {selectedPlayer && <PlayerPage player={selectedPlayer} />}
     </div>
   );

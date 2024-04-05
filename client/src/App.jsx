@@ -118,12 +118,12 @@ function App() {
   //   });
 
   // // /api/mvps
-  // fetch("http://localhost:5172/api/mvps")
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     console.log("/api/mvps result")
-  //     console.log(data);
-  //   });
+  fetch("http://localhost:5172/api/mvps")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("/api/mvps result")
+      console.log(data);
+    });
 
   
 
