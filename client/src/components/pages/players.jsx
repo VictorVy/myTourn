@@ -28,6 +28,13 @@ const Players = () => {
     }
   ]);
 
+  fetch("http://localhost:5172/api/query?selectList=*&fromList=Player")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("/api/query result")
+      console.log(data);
+    });
+
   const [newPlayer, setNewPlayer] = useState({
     id: null,
     displayName: '',
@@ -43,7 +50,26 @@ const Players = () => {
   const addPlayer = () => {
     const updatedPlayers = [...players, newPlayer];
     setPlayers(updatedPlayers);
-    setNewPlayer({ id: null, displayName: '', firstName: '', lastName: '', age: '' });
+    setNewPlayer({ id: 4, displayName: 'testFIrst', firstName: '', lastName: '', age: '' });
+
+    fetch("http://localhost:5172/api/insert", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      table: "Participant",
+      columns: "id, firstName, lastName, age",
+      valuesArr: ["4, 'testFirst, testLast, 6'"]
+    })
+  })
+
+  fetch("http://localhost:5172/api/query?selectList=*&fromList=Player")
+    .then((res) => res.json())
+    .then((data) => {
+      //setPlayers(data);
+      console.log(data);
+    });
   };
 
   const deletePlayer = (id) => {
@@ -51,6 +77,17 @@ const Players = () => {
     const filteredPlayers = players.filter((player) => player.id !== selectedPlayer.id);
     setPlayers(filteredPlayers);
     setSelectedPlayer(null);
+
+    fetch("http://localhost:5172/api/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      table: "Player",
+      whereClause: "id = " + id
+    })
+  })
   };
 
   const handleChange = (e) => {
@@ -65,8 +102,8 @@ const Players = () => {
         <input
           type="text"
           name="displayName"
-          value={newPlayer.displayName}
-          placeholder="Player Display Name"
+          value={newPlayer.null}
+          placeholder="Player ID"
           onChange={handleChange}
           className="border rounded py-2 px-3 mr-2"
         />

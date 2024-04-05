@@ -20,8 +20,13 @@ const StreamsPage = () => {
   };
 
   const sortedStreams = orderByViewership
-    ? [...streams].sort((a, b) => b.viewership - a.viewership)
-    : streams;
+  fetch("http://localhost:5172/api/highestAvgViewershipPlatform")
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("/api/highestAvgViewershipPlatform result")
+    console.log(data);
+    //setStreams(data);
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -42,17 +47,17 @@ const StreamsPage = () => {
       <div className="mb-4">
         <input
           type="checkbox"
-          id="orderByViewership"
+          id="Highest Viwership"
           checked={orderByViewership}
           onChange={handleCheckboxChange}
           className="mr-2"
         />
-        <label htmlFor="orderByViewership">Order by viewership</label>
+        <label htmlFor="orderByViewership">Highest Viewership</label>
       </div>
       <div>
         <h2 className="text-xl font-semibold mb-4">Streams</h2>
         <ul className="space-y-4">
-          {sortedStreams.map((stream) => (
+          {streams.map((stream) => (
             (!selectedPlatform || stream.platform === selectedPlatform) && (
               <li key={stream.id} className="border rounded p-4">
                 <div className="font-semibold">Platform: {stream.platform}</div>
