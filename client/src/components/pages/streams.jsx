@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const StreamsPage = () => {
   const [streams, setStreams] = useState([
@@ -17,6 +17,22 @@ const StreamsPage = () => {
   //   });
     
   ]);
+
+  const [popularGames, setPopularGames] = useState([
+
+    {id: 1, name: 'smash', genre: "fighting", company: "nintendo", yearPublished: 2018},
+    {id: 2, name: 'smash', genre: "fighting", company: "nintendo", yearPublished: 2018}
+  ])
+
+   useEffect(() => {
+    fetch("http://localhost:5172/api/popularGames")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("/api/popularGames result")
+      console.log(data);
+      //setPopularGames(data);
+    });
+  }, []);
 
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [orderByViewership, setOrderByViewership] = useState(false);
@@ -80,6 +96,20 @@ const StreamsPage = () => {
               </li>
             )
           ))}
+        </ul>
+      </div>
+      <div>
+        <h1 className='b '>Popular Games</h1>
+        <ul>
+          {popularGames && popularGames.map((popularGames) => (
+            <li key={popularGames.id} className="border rounded p-4">
+            <div>Name: {popularGames.name}</div>
+            <div> Genre: {popularGames.genre}</div>
+          </li>
+          )
+          
+          )}
+
         </ul>
       </div>
     </div>

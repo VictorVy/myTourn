@@ -9,7 +9,7 @@ const NavBar = () => {
           <Link to="/" className="text-blue-500 hover:text-blue-700">Tournaments</Link>
           <Link to="/Players" className="text-blue-500 hover:text-blue-700">Players</Link>
           <Link to="/Teams" className="text-blue-500 hover:text-blue-700">Teams</Link>
-          <Link to="/Streams" className="text-blue-500 hover:text-blue-700">Streams</Link>
+          <Link to="/Streams" className="text-blue-500 hover:text-blue-700">Streams and Games</Link>
         </div>
       </nav>
     </div>
