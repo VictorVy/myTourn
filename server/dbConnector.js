@@ -103,11 +103,11 @@ async function executeQuery(selectList, fromList, whereClause, groupList, having
         }
 
         result = await connection.execute(query);
+        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -133,11 +133,11 @@ async function executeInsert(table, columns, valuesArr) {
         query += " SELECT * FROM dual";
 
         result = await connection.execute(query);
+        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -161,11 +161,11 @@ async function executeUpdate(table, setList, whereClause) {
         }
 
         result = await connection.execute(query);
+        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -189,11 +189,11 @@ async function executeDelete(table, whereClause) {
         }
 
         result = await connection.execute(query);
+        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -207,16 +207,17 @@ async function getTeamPlayers(teamId) {
 
         result = await connection.execute(
             `SELECT * 
-            FROM Member NATURAL JOIN Player 
-            WHERE teamid = :teamId`,
+            FROM Member, Player 
+            WHERE teamid = :teamId AND
+                  playerid = id`,
             [teamId]
         );
 
+        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -229,15 +230,16 @@ async function getNumTournParticipants() {
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
-            `SELECT tid, COUNT(*) 
+            `SELECT tid, COUNT(*) as PARTICIPANT_COUNT 
             FROM Joins 
             GROUP BY tid`
         );
+        
+        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -262,13 +264,13 @@ async function getPopularGames() {
             GROUP BY gameid 
             HAVING COUNT(*) >= 5`
         );
-
+        
+        await connection.close();
         result = { teamGames, playerGames };
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -281,18 +283,19 @@ async function getHighestAvgViewershipPlatform() {
         connection = await oracledb.getConnection();
 
         result = await connection.execute(
-            `SELECT platform, AVG(viewership)
-            FROM Broadcast 
-            GROUP BY platform 
+            `SELECT platform, AVG(viewership) as AVG_VIEWERSHIP
+            FROM Broadcast NATURAL JOIN HostPlatform
+            GROUP BY platform
             HAVING AVG(viewership) >= ALL (SELECT AVG(viewership) 
-                                            FROM Broadcast 
+                                            FROM Broadcast NATURAL JOIN HostPlatform
                                             GROUP BY platform)`
         );
+
+        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
         return result;
     }
 }
@@ -306,20 +309,23 @@ async function getMVPs() {
 
         result = await connection.execute(
             `SELECT * 
-            FROM Participant 
-            WHERE NOT EXISTS (SELECT *
-                              FROM Tournament 
-                              WHERE NOT EXISTS (SELECT *
-                                                FROM Joins 
-                                                WHERE tid = tid 
-                                                AND pid = pid))`
+            FROM Player p
+            WHERE NOT EXISTS (SELECT t.id
+                              FROM Tournament t
+                              WHERE t.gameid IN (SELECT g.id
+                                                 FROM IndividualGame g)
+                              MINUS
+                              SELECT j.tid
+                              FROM Joins j
+                              WHERE j.pid = p.id)`
         );
+
+        await connection?.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
-        await connection.close();
-        return result.rows;
+        return result;
     }
 }
 
