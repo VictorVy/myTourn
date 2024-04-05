@@ -103,11 +103,15 @@ async function executeQuery(selectList, fromList, whereClause, groupList, having
         }
 
         result = await connection.execute(query);
-        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -133,11 +137,15 @@ async function executeInsert(table, columns, valuesArr) {
         query += " SELECT * FROM dual";
 
         result = await connection.execute(query);
-        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -161,11 +169,15 @@ async function executeUpdate(table, setList, whereClause) {
         }
 
         result = await connection.execute(query);
-        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -189,11 +201,15 @@ async function executeDelete(table, whereClause) {
         }
 
         result = await connection.execute(query);
-        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -212,12 +228,15 @@ async function getTeamPlayers(teamId) {
                   playerid = id`,
             [teamId]
         );
-
-        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -234,12 +253,15 @@ async function getNumTournParticipants() {
             FROM Joins 
             GROUP BY tid`
         );
-        
-        await connection.close();
-    } catch (err) {
+        } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -265,12 +287,16 @@ async function getPopularGames() {
             HAVING COUNT(*) >= 5`
         );
         
-        await connection.close();
         result = { teamGames, playerGames };
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -290,12 +316,15 @@ async function getHighestAvgViewershipPlatform() {
                                             FROM Broadcast NATURAL JOIN HostPlatform
                                             GROUP BY platform)`
         );
-
-        await connection.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
@@ -319,12 +348,15 @@ async function getMVPs() {
                               FROM Joins j
                               WHERE j.pid = p.id)`
         );
-
-        await connection?.close();
     } catch (err) {
         console.error(err);
         result = err;
     } finally {
+        try {
+            await connection.close();
+        } catch (err) {
+            console.error(err);
+        }
         return result;
     }
 }
