@@ -94,12 +94,12 @@ function App() {
   //   });
 
   // // /api/numTournParticipants
-  fetch("http://localhost:5172/api/numTournParticipants")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("/api/numTournParticipants result")
-      console.log(data);
-    });
+  // fetch("http://localhost:5172/api/numTournParticipants")
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     console.log("/api/numTournParticipants result")
+  //     console.log(data);
+  //   });
 
   // // /api/popularGames 
   // fetch("http://localhost:5172/api/popularGames")
@@ -118,12 +118,12 @@ function App() {
   //   });
 
   // // /api/mvps
-  fetch("http://localhost:5172/api/mvps")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("/api/mvps result")
-      console.log(data);
-    });
+  // fetch("http://localhost:5172/api/mvps")
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     console.log("/api/mvps result")
+  //     console.log(data);
+  //   });
 
   
 
