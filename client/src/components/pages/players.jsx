@@ -104,6 +104,19 @@ fetch("http://localhost:5172/api/insert", {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewParticipant({ ...newParticipant, [name]: value });
+
+    let filter = document.getElementById("filter_input").value;
+    if (filter === "") {
+      filter = "1=1";
+    }
+
+    fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant&whereClause=" + filter)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("/api/query result");
+        console.log(data);
+        setParticipants(data.rows);
+      });
   };
 
   const handleUpdateParticipant = (id) => {
@@ -144,6 +157,16 @@ fetch("http://localhost:5172/api/insert", {
   return (
     <div className="max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-4">Participants</h2>
+      <div className="mb-4">
+        <input
+          id="filter_input"
+          type="text"
+          name="Filter"
+          placeholder="Filter"
+          onChange={handleChange}
+          className="border rounded py-2 px-3 mr-2"
+        />
+      </div>
       <div className="mb-4">
         <input
           type="text"
