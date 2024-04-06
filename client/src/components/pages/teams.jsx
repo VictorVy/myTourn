@@ -84,6 +84,7 @@ const Teams = () => {
         ))}
       </ul>
       {selectedTeam && <TeamPage team={selectedTeam} />}
+      
     </div>
   );
 };

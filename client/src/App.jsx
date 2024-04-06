@@ -87,19 +87,19 @@ function App() {
 
   // // /api/teamPlayers/:teamId done
   // fetch("http://localhost:5172/api/teamPlayers/1")
-  //   .then((res) => res.json())
+  //   .then((res) => res.json()) 
   //   .then((data) => {
   //     console.log("/api/teamPlayers/:teamId result")
   //     console.log(data);
   //   });
 
   // // /api/numTournParticipants
-  fetch("http://localhost:5172/api/numTournParticipants")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("/api/numTournParticipants result")
-      console.log(data);
-    });
+  // fetch("http://localhost:5172/api/numTournParticipants")
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     console.log("/api/numTournParticipants result")
+  //     console.log(data);
+  //   });
 
   // // /api/popularGames 
   // fetch("http://localhost:5172/api/popularGames")
