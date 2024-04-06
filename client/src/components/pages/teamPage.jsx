@@ -21,6 +21,16 @@ const TeamPage = ({team, addTeamPLayer}) => {
   //     setNewPlayers(data);
   //   });
 
+  useEffect(() => {
+    fetch("http://localhost:5172/api/query?selectList=*&fromList=Broadcast")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("/api/query result")
+      console.log("AHHHHHHHHH");
+      setStreams(data.rows);
+    });
+  }, []);
+
 
 
   const handleSelectChange = (event) => {

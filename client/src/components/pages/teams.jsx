@@ -1,28 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import TeamPage from './teamPage';
 
 const Teams = () => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [teams, setTeams] = useState([
-    {
-      name: 'Example Team',
-      players: [
-        { id: 1, displayName: 'Player1', firstName: 'John', lastName: 'Doe', age: 25 },
-        { id: 2, displayName: 'Player2', firstName: 'Jane', lastName: 'Smith', age: 30 },
-        { id: 3, displayName: 'Player3', firstName: 'Alice', lastName: 'Johnson', age: 22 }
-      ],
-      coach: 'Coach Name'
-    },
-    {
-      name: 'Example Team 2',
-      players: [
-        { id: 1, displayName: 'Player123', firstName: 'John', lastName: 'Doe', age: 25 },
-        { id: 2, displayName: 'Player2', firstName: 'Jane', lastName: 'Smith', age: 30 },
-        { id: 3, displayName: 'Player3', firstName: 'Alice', lastName: 'Johnson', age: 22 }
-      ],
-      coach: 'Coach Name'
-    },
+    ""
   ]);
+
+  useEffect(() => {
+    fetch("http://localhost:5172/api/query?selectList=*&fromList=Team")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("/api/query result")
+      console.log(data);
+      setTeams(data.rows);
+    });
+  }, []);
 
   const [newTeam, setNewTeam] = useState({
     name: '',
@@ -85,7 +78,8 @@ const Teams = () => {
             className="flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300 hover:bg-gray-100"
             onClick={() => handleTeamClick(team)}
           >
-            <span>{team.name}</span>
+            <span>{team.ID}</span>
+            <span>{team.COACH}</span>
           </li>
         ))}
       </ul>
