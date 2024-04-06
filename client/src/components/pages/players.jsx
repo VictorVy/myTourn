@@ -50,37 +50,28 @@ fetch("http://localhost:5172/api/insert", {
   })
 })
 .then((res) => res.json())
-  .then((res) => {
-    if (!res.rows) {
-      console.log(res);
-      throw new Error(res.code);
-    }
-    return res;
-  })
-  .then(async (data) => {
-    console.log("/api/insert result");
-    console.log(data);
-    return await fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant");
-  })
-  .then((res) => res.json())
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error(res.code);
-    }
-    return res;
-  })
-  .then((data) => {
-    console.log("/api/query result");
-    console.log(data);
-    setParticipants(data.rows);
-  })
-  .catch((error) => {
-    console.log("Error during fetch:", error);
-    // Handle the error here, such as showing an error message to the user
-    window.alert("Failed to add participant: " + error);
-  });
-
-
+    .then((res) => {
+      console.log(res.rowsAffected);
+      if (res.rowsAffected === undefined) {
+        throw new Error(res.code);
+      }
+      return res;
+    })
+    .then(async (data) => {
+      console.log("/api/insert result");
+      console.log(data);
+      return await fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        console.log("/api/query result");
+        setParticipants(data.rows);
+      })
+    }).catch((error) => {
+      console.log("Error during fetch:", error);
+      // Handle the error here, such as showing an error message to the user
+      window.alert("Failed to add participant: " + error);
+    });
       
   };
 
@@ -113,6 +104,19 @@ fetch("http://localhost:5172/api/insert", {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewParticipant({ ...newParticipant, [name]: value });
+
+    let filter = document.getElementById("filter_input").value;
+    if (filter === "") {
+      filter = "1=1";
+    }
+
+    fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant&whereClause=" + filter)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("/api/query result");
+        console.log(data);
+        setParticipants(data.rows);
+      });
   };
 
   const handleUpdateParticipant = (id) => {
@@ -153,6 +157,16 @@ fetch("http://localhost:5172/api/insert", {
   return (
     <div className="max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-4">Participants</h2>
+      <div className="mb-4">
+        <input
+          id="filter_input"
+          type="text"
+          name="Filter"
+          placeholder="Filter"
+          onChange={handleChange}
+          className="border rounded py-2 px-3 mr-2"
+        />
+      </div>
       <div className="mb-4">
         <input
           type="text"

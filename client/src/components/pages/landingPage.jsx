@@ -68,12 +68,12 @@ const LandingPage = () => {
           
           </div>
           <div className="flex">
-            <button onClick={handleAddTournament} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+            {/* <button onClick={handleAddTournament} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
               Add Tournament
             </button>
             <button onClick={handleRemoveTournament} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
               Remove Tournament
-            </button>
+            </button> */}
         </div>
         <nav>
           <ul className="divide-y divide-gray-300">
