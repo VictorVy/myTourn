@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TeamPage from './teamPage';
 
 const Teams = () => {
@@ -84,7 +84,7 @@ const Teams = () => {
         ))}
       </ul>
       {selectedTeam && <TeamPage team={selectedTeam} />}
-      
+
     </div>
   );
 };
