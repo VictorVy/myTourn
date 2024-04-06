@@ -36,15 +36,15 @@ const LandingPage = () => {
     },
   ]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:5172/api/query?selectList=*&fromList=Tournaments")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setTournaments(data);
-  //       console.log("/api result")
-  //       console.log(data.message);
-  //     })
-  // }, []);
+  useEffect(() => {
+    fetch("http://localhost:5172/api/query?selectList=*&fromList=Tournament")
+      .then((res) => res.json())
+      .then((data) => {
+        // setTournaments(data);
+        console.log("LANDING PAGE")
+        console.log(data);
+      })
+  }, []);
 
   const [selectedTourney, setSelectedTourney] = useState(null);
   const tournamentInfo = { id: 5, name: "the theourneye" };
