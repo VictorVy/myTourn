@@ -18,11 +18,10 @@ const StreamsPage = () => {
     
   ]);
 
-  const [popularGames, setPopularGames] = useState([""
-
+  const [popularGames, setPopularGames] = useState(null
     // {id: 1, name: 'smash', genre: "fighting", company: "nintendo", yearPublished: 2018},
     // {id: 2, name: 'smash', genre: "fighting", company: "nintendo", yearPublished: 2018}
-  ])
+  )
 
   useEffect(() => {
     fetch("http://localhost:5172/api/popularGames")
@@ -30,7 +29,7 @@ const StreamsPage = () => {
     .then((data) => {
       console.log("/api/popularGames result")
       console.log(data);
-      setPopularGames(data.playerGames.rows);
+      setPopularGames(data);
     });
   }, []);
   
@@ -113,26 +112,42 @@ const StreamsPage = () => {
       <div>
         <h2 className="text-xl font-semibold mb-4">Streams</h2>
         <ul className="space-y-4">
-          {streams && !avg && streams.map((stream) => (
+          {streams && !avg && streams.map((stream, index) => (
             (streams) && (
-              <li key={stream.id} className="border rounded p-4">
+              <li key={index} className="border rounded p-4">
                 <div>Host: {stream.HOST}</div>
                 <div>Viewership: {stream.VIEWERSHIP}</div>
               </li>
             )
           ))}
         </ul>
-        <div>
-          {avg && <h1>{avg.PLATFORM} with {avg.AVG_VIEWERSHIP} viewers </h1>} 
+        <div className="border rounded p-4">
+          {avg && <h1>{avg.PLATFORM} has the highest average viewership of {avg.AVG_VIEWERSHIP}.</h1>} 
         </div>
       </div>
+      <br/>
       <div>
-        <h1 className='b '>Popular Games</h1>
+        <h1 className='b '>Popular Team Games</h1>
         <ul>
-          {popularGames && popularGames.map((popularGames) => (
-            <li key={popularGames.id} className="border rounded p-4">
-            <div>Name: {popularGames.name}</div>
-            <div> Genre: {popularGames.genre}</div>
+          {popularGames && popularGames.teamGames.rows.map((popularGames, index) => (
+            <li key={index} className="border rounded p-4">
+            <div>Name: {popularGames.NAME}</div>
+            <div> Genre: {popularGames.GENRE}</div>
+          </li>
+          )
+          
+          )}
+
+        </ul>
+      </div>
+      <br/>
+      <div>
+        <h1 className='b '>Popular Solo Games</h1>
+        <ul>
+          {popularGames && popularGames.playerGames.rows.map((popularGames, index) => (
+            <li key={index} className="border rounded p-4">
+            <div>Name: {popularGames.NAME}</div>
+            <div> Genre: {popularGames.GENRE}</div>
           </li>
           )
           

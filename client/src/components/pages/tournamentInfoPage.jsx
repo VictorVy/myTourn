@@ -46,7 +46,7 @@ const TournamentPage = ({ tournament }) => {
   return (
     <div className="bg-gray-100">
       <div className="max-w-4xl mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-4">{tournament.name}</h1>
+        <h1 className="text-3xl font-bold mb-4">{tournament.NAME}</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white p-4 rounded shadow-md">
             <h2 className="text-lg font-semibold mb-2">Broadcast</h2>
@@ -59,9 +59,9 @@ const TournamentPage = ({ tournament }) => {
               </>
             ) : (
               <>
-                <p>{tournament.broadcast.name}</p>
-                <p>{tournament.broadcast.platform}</p>
-                <p>{tournament.broadcast.viewership} viewers</p>
+                {/* <p>{tournament.broadcast.NAME}</p>
+                <p>{tournament.broadcast.PLATFORM}</p>
+                <p>{tournament.broadcast.VIEWERSHIP} viewers</p> */}
                 <button onClick={handleEditBroadcast} className="border bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mb-2"> Edit </button>
               </>
             )}
@@ -77,8 +77,8 @@ const TournamentPage = ({ tournament }) => {
               </>
             ) : (
               <>
-                <p>{tournament.sponsor.SponsorName}</p>
-                <p>{tournament.sponsor.amount}$</p>
+                {/* <p>{tournament.sponsor.SPONSORNAME}</p>
+                <p>{tournament.sponsor.AMOUNT}$</p> */}
                 <button onClick={handleEditSponsor} className="border bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mb-2"> Edit </button>
               </>
             )}
@@ -94,8 +94,8 @@ const TournamentPage = ({ tournament }) => {
               </>
             ) : (
               <>
-                <p>{tournament.game.name}</p>
-                <p className="text-sm text-gray-500">{tournament.game.type}</p>
+                {/* <p>{tournament.game.name}</p> */}
+                {/* <p className="text-sm text-gray-500">{tournament.game.type}</p> */}
                 <button onClick={handleEditGame} className="border bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mb-2"> Edit </button>
               </>
             )}
@@ -112,8 +112,8 @@ const TournamentPage = ({ tournament }) => {
               </>
             ) : (
               <>
-                <p>{tournament.venue.streetAddress}, {tournament.venue.city}</p>
-                <p>{tournament.venue.country}</p>
+                {/* <p>{tournament.venue.streetAddress}, {tournament.venue.city}</p>
+                <p>{tournament.venue.country}</p> */}
                 <button onClick={handleEditVenue} className="border bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mb-2"> Edit </button>
               </>
             )}
