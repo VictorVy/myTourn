@@ -50,37 +50,28 @@ fetch("http://localhost:5172/api/insert", {
   })
 })
 .then((res) => res.json())
-  .then((res) => {
-    if (!res.rows) {
-      console.log(res);
-      throw new Error(res.code);
-    }
-    return res;
-  })
-  .then(async (data) => {
-    console.log("/api/insert result");
-    console.log(data);
-    return await fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant");
-  })
-  .then((res) => res.json())
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error(res.code);
-    }
-    return res;
-  })
-  .then((data) => {
-    console.log("/api/query result");
-    console.log(data);
-    setParticipants(data.rows);
-  })
-  .catch((error) => {
-    console.log("Error during fetch:", error);
-    // Handle the error here, such as showing an error message to the user
-    window.alert("Failed to add participant: " + error);
-  });
-
-
+    .then((res) => {
+      console.log(res.rowsAffected);
+      if (res.rowsAffected === undefined) {
+        throw new Error(res.code);
+      }
+      return res;
+    })
+    .then(async (data) => {
+      console.log("/api/insert result");
+      console.log(data);
+      return await fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        console.log("/api/query result");
+        setParticipants(data.rows);
+      })
+    }).catch((error) => {
+      console.log("Error during fetch:", error);
+      // Handle the error here, such as showing an error message to the user
+      window.alert("Failed to add participant: " + error);
+    });
       
   };
 
