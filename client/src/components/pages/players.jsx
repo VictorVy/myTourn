@@ -8,9 +8,7 @@ const Players = () => {
     displayName: ''
   });
   const [checkder, setCheckder] = useState(false); // Moved to the top level
-  const [mvp, setMvp] = useState([
-    ""]
-  )
+  const [mvp, setMvp] = useState([""]);
 
   useEffect(() => {
     fetch("http://localhost:5172/api/mvps")
@@ -18,6 +16,7 @@ const Players = () => {
     .then((data) => {
       console.log("/api/mvps result")
       console.log(data);
+      setMvp(data.rows);
     });
   }, []);
 
@@ -139,7 +138,7 @@ fetch("http://localhost:5172/api/insert", {
       .then((data) => {
         console.log("/api/mvps result");
         console.log(data);
-        //setMvp(data);
+        setMvp(data.rows);
       });
   };
 
@@ -198,13 +197,13 @@ fetch("http://localhost:5172/api/insert", {
         <label htmlFor="orderByViewership">Show MVP</label>
         {checkder && 
           <div>
-            {mvp.map((displayName, index) => (
+            {mvp && mvp.map((displayName, index) => (
           <li
             key={index}
             className="flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300"
         
           >
-            <span>{displayName.displayName}</span>
+            <span>ID: {displayName.ID} Name: {displayName.FIRSTNAME} {displayName.LASTNAME }</span>
           </li>
         ))}
           </div>

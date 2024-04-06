@@ -274,17 +274,21 @@ async function getPopularGames() {
         connection = await oracledb.getConnection();
 
         const teamGames = await connection.execute(
-            `SELECT gameid 
-            FROM TeamPlays 
-            GROUP BY gameid 
-            HAVING COUNT(*) >= 3`
+            `SELECT id, name, genre, company, yearPublished
+            FROM Game
+            WHERE id IN (SELECT gameid 
+                        FROM TeamPlays
+                        GROUP BY gameid 
+                        HAVING COUNT(*) >= 3)`
         );
 
         const playerGames = await connection.execute(
-            `SELECT gameid 
-            FROM PlayerPlays 
-            GROUP BY gameid 
-            HAVING COUNT(*) >= 5`
+            `SELECT id, name, genre, company, yearPublished
+            FROM Game
+            WHERE id IN (SELECT gameid 
+                        FROM PlayerPlays 
+                        GROUP BY gameid 
+                        HAVING COUNT(*) >= 5)`
         );
         
         result = { teamGames, playerGames };
