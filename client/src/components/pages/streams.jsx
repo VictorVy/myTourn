@@ -121,10 +121,11 @@ const StreamsPage = () => {
             )
           ))}
         </ul>
-        <div>
-          {avg && <h1>{avg.PLATFORM} with {avg.AVG_VIEWERSHIP} viewers </h1>} 
+        <div className="border rounded p-4">
+          {avg && <h1>{avg.PLATFORM} has the highest average viewership of {avg.AVG_VIEWERSHIP}.</h1>} 
         </div>
       </div>
+      <br/>
       <div>
         <h1 className='b '>Popular Team Games</h1>
         <ul>
@@ -139,6 +140,7 @@ const StreamsPage = () => {
 
         </ul>
       </div>
+      <br/>
       <div>
         <h1 className='b '>Popular Solo Games</h1>
         <ul>
