@@ -81,7 +81,7 @@ const LandingPage = () => {
               <button key={index} onClick={() => handleClick(tournament)} className="block w-full py-2 text-left hover:bg-gray-200 focus:outline-none">
                 { tournament.NAME } <br/>
                 { "ID: " + tournament.ID } <br/>
-                { "Participant count: " + partCount[index].PARTICIPANT_COUNT }
+                { "Participant count: " + (index < partCount.length ? partCount[index].PARTICIPANT_COUNT : "") }
               </button>
             ))}
           </ul>
