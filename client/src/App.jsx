@@ -87,7 +87,7 @@ function App() {
 
   // // /api/teamPlayers/:teamId done
   // fetch("http://localhost:5172/api/teamPlayers/1")
-  //   .then((res) => res.json())
+  //   .then((res) => res.json()) 
   //   .then((data) => {
   //     console.log("/api/teamPlayers/:teamId result")
   //     console.log(data);

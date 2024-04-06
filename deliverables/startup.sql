@@ -222,10 +222,20 @@ INSERT INTO Contract (pid, orgid, startDate, endDate, amount) VALUES (1004, 4, T
 INSERT INTO Contract (pid, orgid, startDate, endDate, amount) VALUES (1005, 5, TO_DATE('2024-05-01', 'YYYY-MM-DD'), TO_DATE('2024-05-10', 'YYYY-MM-DD'), 2200);
 
 INSERT INTO TeamPlays (teamid, gameid) VALUES (1001, 8801);
+INSERT INTO TeamPlays (teamid, gameid) VALUES (1001, 8805);
+
+INSERT INTO TeamPlays (teamid, gameid) VALUES (1002, 8801);
 INSERT INTO TeamPlays (teamid, gameid) VALUES (1002, 8802);
+INSERT INTO TeamPlays (teamid, gameid) VALUES (1002, 8805);
+
+INSERT INTO TeamPlays (teamid, gameid) VALUES (1003, 8801);
 INSERT INTO TeamPlays (teamid, gameid) VALUES (1003, 8803);
+
 INSERT INTO TeamPlays (teamid, gameid) VALUES (1004, 8804);
+
 INSERT INTO TeamPlays (teamid, gameid) VALUES (1005, 8805);
+
+
 
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8808);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8809);
@@ -240,14 +250,44 @@ INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8817);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8818);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1001, 8819);
 
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8808);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8809);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8810);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8811);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8812);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8813);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8814);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8815);
-INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8811);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8816);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8817);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8818);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1002, 8819);
+
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8808);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8809);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8810);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8811);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8812);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8813);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8814);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8815);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8816);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8817);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8818);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1003, 8819);
+
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1004, 8808);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1004, 8809);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1004, 8810);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1004, 8811);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1004, 8812);
 INSERT INTO PlayerPlays (playerid, gameid) VALUES (1004, 8813);
-INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8814);
-INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8815);
+
+
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8808);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8809);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8810);
+INSERT INTO PlayerPlays (playerid, gameid) VALUES (1005, 8811);
+
 
 commit;
