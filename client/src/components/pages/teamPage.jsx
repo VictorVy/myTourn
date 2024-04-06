@@ -1,48 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-
-
-const TeamPage = ({team, addTeamPLayer}) => {
-  
-
+const TeamPage = ({ team, addTeamPlayer }) => {
   const [selectedPlayer, setSelectedPlayer] = useState('');
   const [newPlayers, setNewPlayers] = useState([
-    { id: 4, displayName: 'Player1', firstName: 'John', lastName: 'Doe', age: 25 },
-    { id: 5, displayName: 'Player2', firstName: 'Jane', lastName: 'Smith', age: 30 },
-    { id: 6, displayName: 'Player3', firstName: 'Alice', lastName: 'Johnson', age: 22 }
+    // { id: 4, displayName: 'Player1', firstName: 'John', lastName: 'Doe', age: 25 },
+    // { id: 5, displayName: 'Player2', firstName: 'Jane', lastName: 'Smith', age: 30 },
+    // { id: 6, displayName: 'Player3', firstName: 'Alice', lastName: 'Johnson', age: 22 }
   ]);
 
-  // /api/teamPlayers/:teamId
-  // fetch("http://localhost:5172/api/teamPlayers/" + team.id)
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     console.log("/api/teamPlayers/:teamId result")
-  //     console.log(data);
-  //     setNewPlayers(data);
-  //   });
-
   useEffect(() => {
-    fetch("http://localhost:5172/api/query?selectList=*&fromList=Broadcast")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("/api/query result")
-      console.log("AHHHHHHHHH");
-      setStreams(data.rows);
-    });
-  }, []);
-
-
+    const str = `http://localhost:5172/api/teamPlayers/${team.ID}`
+    console.log(str);
+    fetch(str)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("/api/query new players result");
+        console.log(data);
+        setNewPlayers(data.rows);
+      });
+  });
 
   const handleSelectChange = (event) => {
     setSelectedPlayer(event.target.value);
   };
  
   const addPlayer = (selectedPlayer) => {
-    addTeamPLayer(selectedPlayer);
+    addTeamPlayer(selectedPlayer);
     console.log("hi");
   };
-
-  
 
   return (
     <div className="bg-gray-100 flex items-center justify-center">
@@ -51,41 +36,27 @@ const TeamPage = ({team, addTeamPLayer}) => {
           <h1 className="text-3xl font-bold">Team Details</h1>
         </div>
         <div className="mb-4">
-          <p><strong>Team Name:</strong> {team.name}</p>
-          <p><strong>Coach:</strong> {team.coach}</p>
+          <p><strong>ID:</strong> {team.ID}</p>
+          <p><strong>Coach:</strong> {team.COACH}</p>
         </div>
 
         <div className="mb-4">
           <h2 className="text-2xl font-semibold">Players</h2>
           <ul className="list-disc pl-4">
-            {team.players.map(player => (
+            {newPlayers.map(player => (
               <li key={player.id}>
-                {player.displayName} - {player.firstName} {player.lastName}, Age: {player.age}
+                {player.PLAYERID} - {player.FIRSTNAME} {player.LASTNAME}, Age: {player.AGE}
               </li>
             ))}
           </ul>
           <div>
-      <h1>Add Players</h1>
-      <select value={selectedPlayer} onChange={handleSelectChange}>
-        <option value="">Select a player...</option>
-        {newPlayers.map((player) => (
-          <option key={player.id} value={player.id}>
-            {player.displayName}
-          </option>
-        ))}
-      </select>
-      {selectedPlayer && (
-        <div>
-          <h2>Selected Player</h2>
-          <p>ID: {selectedPlayer}</p>
-          {/* You can display other player details here */}
-        </div>
-      )}
-      <button onClick={addPlayer => (selectedPlayer)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-          Add Player
-        </button>
-    </div>
-   
+            {selectedPlayer && (
+              <div>
+                <h2>Selected Player</h2>
+                <p>ID: {selectedPlayer}</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
