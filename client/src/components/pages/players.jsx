@@ -39,29 +39,46 @@ const Players = () => {
   const addParticipant = () => {
     const playerString = `${newParticipant.ID}, '${newParticipant.displayName}'`;
 
-    fetch("http://localhost:5172/api/insert", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        table: "Participant",
-        columns: "id, displayName",
-        valuesArr: [playerString]
-      })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("/api/insert result");
-        console.log(data);
-        fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant")
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("/api/query result");
-            console.log(data);
-            setParticipants(data.rows);
-          });
-      });
+fetch("http://localhost:5172/api/insert", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    table: "Participant",
+    columns: "id, displayName",
+    valuesArr: [playerString]
+  })
+})
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error("Failed to add participant: " + res.statusText);
+    }
+    return res.json();
+  })
+  .then((data) => {
+    console.log("/api/insert result");
+    console.log(data);
+    return fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant");
+  })
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error("Failed to fetch participants: " + res.statusText);
+    }
+    return res.json();
+  })
+  .then((data) => {
+    console.log("/api/query result");
+    console.log(data);
+    setParticipants(data.rows);
+  })
+  .catch((error) => {
+    console.out("Error during fetch:", error);
+    // Handle the error here, such as showing an error message to the user
+  });
+
+
+      
   };
 
   const deleteParticipant = () => {
@@ -158,13 +175,14 @@ const Players = () => {
         </button>
       </div>
       <ul className="space-y-2">
-        {participants.map((participant, index) => (
+        {participants && participants.map((participant, index) => (
           <li
             key={index}
             className={`flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300 hover:bg-gray-100 ${selectedParticipant && selectedParticipant.ID === participant.ID ? 'border-blue-500' : ''}`}
             onClick={() => handleParticipantClick(participant)}
           >
             <span>Display Name: {participant.DISPLAYNAME}</span>
+            <span>ID: {participant.ID}  </span>
             <button onClick={() => handleUpdateParticipant(participant.ID)}>Update</button>
           </li>
         ))}
