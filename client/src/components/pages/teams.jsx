@@ -48,7 +48,7 @@ const Teams = () => {
     <div className="max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-4">Teams</h2>
       <div className="mb-4">
-        <input
+        {/* <input
           type="text"
           name="name"
           value={newTeam.name}
@@ -63,13 +63,13 @@ const Teams = () => {
           placeholder="Coach Name"
           onChange={handleChange}
           className="border rounded py-2 px-3 mr-2"
-        />
-        <button onClick={addTeam} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        /> */}
+        {/* <button onClick={addTeam} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
           Add Team
         </button>
         <button onClick={deleteTeam} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
           Delete Team
-        </button>
+        </button> */}
       </div>
       <ul className="space-y-2">
         {teams.map((team, index) => (
