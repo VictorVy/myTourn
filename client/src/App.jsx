@@ -67,7 +67,7 @@ function App() {
   //     console.log(data);
   //   });
 
-  //   // /api/delete
+  //   // /api/delete 
   // fetch("http://localhost:5172/api/delete", {
   //   method: "DELETE",
   //   headers: {
@@ -85,7 +85,7 @@ function App() {
   //   });
 
 
-  // // /api/teamPlayers/:teamId
+  // // /api/teamPlayers/:teamId done
   // fetch("http://localhost:5172/api/teamPlayers/1")
   //   .then((res) => res.json())
   //   .then((data) => {
@@ -94,14 +94,14 @@ function App() {
   //   });
 
   // // /api/numTournParticipants
-  // fetch("http://localhost:5172/api/numTournParticipants")
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     console.log("/api/numTournParticipants result")
-  //     console.log(data);
-  //   });
+  fetch("http://localhost:5172/api/numTournParticipants")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("/api/numTournParticipants result")
+      console.log(data);
+    });
 
-  // // /api/popularGames
+  // // /api/popularGames 
   // fetch("http://localhost:5172/api/popularGames")
   //   .then((res) => res.json())
   //   .then((data) => {

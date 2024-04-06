@@ -1,189 +1,171 @@
-import React, { useState } from 'react';
-import SoloTable from '../elements/singleTable';
-import PlayerPage from './playerPage';
+import React, { useState, useEffect } from 'react';
 
 const Players = () => {
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [players, setPlayers] = useState([
-    {
-      id: 1,
-      displayName: 'Player1',
-      firstName: 'John',
-      lastName: 'Doe',
-      age: 25
-    },
-    {
-      id: 2,
-      displayName: 'Player2',
-      firstName: 'Jane',
-      lastName: 'Smith',
-      age: 30
-    },
-    {
-      id: 3,
-      displayName: 'Player3',
-      firstName: 'Alice',
-      lastName: 'Johnson',
-      age: 22
-    }
-  ]);
+  const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [participants, setParticipants] = useState([]);
+  const [newParticipant, setNewParticipant] = useState({
+    ID: '',
+    displayName: ''
+  });
+  const [checkder, setCheckder] = useState(false); // Moved to the top level
+  const [mvp, setMvp] = useState([
+    ""]
+  )
 
-  fetch("http://localhost:5172/api/query?selectList=*&fromList=Player")
+  useEffect(() => {
+    fetch("http://localhost:5172/api/mvps")
     .then((res) => res.json())
     .then((data) => {
-      console.log("/api/query result")
+      console.log("/api/mvps result")
       console.log(data);
     });
+  }, []);
 
-  const [newPlayer, setNewPlayer] = useState({
-    id: null,
-    displayName: '',
-    firstName: '',
-    lastName: '',
-    age: ''
-  });
+  useEffect(() => {
+    fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("/api/query result");
+        console.log(data);
+        setParticipants(data.rows);
+      });
+  }, []);
 
-  const handlePlayerClick = (player) => {
-    setSelectedPlayer(player);
+  const handleParticipantClick = (participant) => {
+    setSelectedParticipant(participant);
+    console.log(participant);
   };
 
-  const addPlayer = () => {
-    const updatedPlayers = [...players, newPlayer];
-    setPlayers(updatedPlayers);
-    setNewPlayer({ id: 4, displayName: 'testFIrst', firstName: '', lastName: '', age: '' });
+  const addParticipant = () => {
+    const playerString = `${newParticipant.ID}, '${newParticipant.displayName}'`;
 
     fetch("http://localhost:5172/api/insert", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      table: "Participant",
-      columns: "id, firstName, lastName, age",
-      valuesArr: ["4, 'testFirst, testLast, 6'"]
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        table: "Participant",
+        columns: "id, displayName",
+        valuesArr: [playerString]
+      })
     })
-  })
-
-  fetch("http://localhost:5172/api/query?selectList=*&fromList=Player")
-    .then((res) => res.json())
-    .then((data) => {
-      //setPlayers(data);
-      console.log(data);
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("/api/insert result");
+        console.log(data);
+        fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant")
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("/api/query result");
+            console.log(data);
+            setParticipants(data.rows);
+          });
+      });
   };
 
-  const deletePlayer = (id) => {
-    if (!selectedPlayer) return;
-    const filteredPlayers = players.filter((player) => player.id !== selectedPlayer.id);
-    setPlayers(filteredPlayers);
-    setSelectedPlayer(null);
+  const deleteParticipant = () => {
+    console.log(selectedParticipant.ID);
+    if (!selectedParticipant) return;
 
     fetch("http://localhost:5172/api/delete", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      table: "Player",
-      whereClause: "id = " + id
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        table: "Participant",
+        whereClause: "id = " + selectedParticipant.ID
+      })
     })
-  })
+      .then(() => {
+        fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant")
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("/api/query result");
+            console.log(data);
+            setParticipants(data.rows);
+            setSelectedParticipant(null); // Reset selected participant after deletion
+          });
+      });
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewPlayer({ ...newPlayer, [name]: value });
+    setNewParticipant({ ...newParticipant, [name]: value });
   };
 
-  const [mvp, setMvp] = useState([
-    {
-      id: 1,
-      displayName: 'Opsine',
-      firstName: 'John',
-      lastName: 'Doe',
-      age: 25
-    },
-    {
-      id: 2,
-      displayName: 'Viktor',
-      firstName: 'Jane',
-      lastName: 'Smith',
-      age: 30
-    }]
-  )
+  const handleUpdateParticipant = (id) => {
+    fetch("http://localhost:5172/api/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        table: "Participant",
+        setList: `displayname = '${newParticipant.displayName}'`,
+        whereClause: `id = ${id}`
+      })
+    })
+    .then(() => {
+      fetch("http://localhost:5172/api/query?selectList=*&fromList=Participant")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("/api/update result");
+          console.log(data);
+          setParticipants(data.rows);
+        });
+    });
 
-  fetch("http://localhost:5172/api/mvps")
-  .then((res) => res.json())
-  .then((data) => {
-    console.log("/api/mvps result")
-    console.log(data);
-    //setMvp(data);
-  });
-
-  const [checkder, setCheckder] = useState(false);
+    fetch("http://localhost:5172/api/mvps")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("/api/mvps result");
+        console.log(data);
+        //setMvp(data);
+      });
+  };
 
   const handleChecked = () => {
-    if(!checkder) {
-    console.log('d');
-    setCheckder(true);
-    }
-    else {
-      console.log('d');
-      setCheckder(false);
-    }
-  }
+    setCheckder(!checkder); // Toggle checkder state
+  };
 
   return (
     <div className="max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Players</h2>
+      <h2 className="text-xl font-bold mb-4">Participants</h2>
       <div className="mb-4">
         <input
           type="text"
+          name="ID"
+          value={newParticipant.ID}
+          placeholder="Participant ID"
+          onChange={handleChange}
+          className="border rounded py-2 px-3 mr-2"
+        />
+        <input
+          type="text"
           name="displayName"
-          value={newPlayer.null}
-          placeholder="Player ID"
+          value={newParticipant.displayName}
+          placeholder="Display Name"
           onChange={handleChange}
           className="border rounded py-2 px-3 mr-2"
         />
-        <input
-          type="text"
-          name="firstName"
-          value={newPlayer.firstName}
-          placeholder="First Name"
-          onChange={handleChange}
-          className="border rounded py-2 px-3 mr-2"
-        />
-        <input
-          type="text"
-          name="lastName"
-          value={newPlayer.lastName}
-          placeholder="Last Name"
-          onChange={handleChange}
-          className="border rounded py-2 px-3 mr-2"
-        />
-        <input
-          type="number"
-          name="age"
-          value={newPlayer.age}
-          placeholder="Age"
-          onChange={handleChange}
-          className="border rounded py-2 px-3 mr-2"
-        />
-        <button onClick={addPlayer} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-          Add Player
+        <button onClick={addParticipant} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          Add Participant
         </button>
-        <button onClick={deletePlayer} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Delete
-          </button>
+        <button onClick={deleteParticipant} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+          Delete
+        </button>
       </div>
       <ul className="space-y-2">
-        {players.map((player, index) => (
+        {participants.map((participant, index) => (
           <li
             key={index}
-            className="flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300 hover:bg-gray-100"
-            onClick={() => handlePlayerClick(player)}
+            className={`flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300 hover:bg-gray-100 ${selectedParticipant && selectedParticipant.ID === participant.ID ? 'border-blue-500' : ''}`}
+            onClick={() => handleParticipantClick(participant)}
           >
-            <span>{player.displayName}</span>
+            <span>Display Name: {participant.DISPLAYNAME}</span>
+            <button onClick={() => handleUpdateParticipant(participant.ID)}>Update</button>
           </li>
         ))}
       </ul>
@@ -197,8 +179,8 @@ const Players = () => {
         />
         <label htmlFor="orderByViewership">Show MVP</label>
         {checkder && 
-            <div>
-              {mvp.map((displayName, index) => (
+          <div>
+            {mvp.map((displayName, index) => (
           <li
             key={index}
             className="flex justify-between items-center bg-white rounded shadow-md py-2 px-4 transition-colors duration-300"
@@ -207,14 +189,11 @@ const Players = () => {
             <span>{displayName.displayName}</span>
           </li>
         ))}
-              
-            </div>
+          </div>
         }
       </div>
-      {selectedPlayer && <PlayerPage player={selectedPlayer} />}
     </div>
   );
 };
 
 export default Players;
-
